@@ -1,39 +1,77 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# http_sandbox_viewer
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+A developer-friendly HTTP request/response viewer for Flutter apps.  
+**Easily inspect, modify, and re-send Dio + Retrofit requests from an in-app dashboard.**
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+> Inspired by [drift_db_viewer](https://pub.dev/packages/drift_db_viewer)
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+---
 
-## Features
+## ✨ Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- 📡 Capture HTTP requests/responses via Dio interceptor  
+- 🧪 View request headers, body, and status  
+- 🔁 Re-execute any request with editable parameters  
+- 🧭 Simple in-app dashboard UI — no external tools required  
+- 🚫 No additional dependencies required for users  
 
-## Getting started
+---
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## 🚀 Getting Started
 
-## Usage
+### 1. Add dependency
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+```yaml
+dependencies:
+  http_sandbox_viewer:
 
-```dart
-const like = 'sample';
-```
+Note: No need to add flutter_hooks or other dependencies — it’s all bundled!
 
-## Additional information
+⸻
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+2. Setup in Dio
+
+final httpLogInterceptor = HttpLogInterceptor();
+
+final dio = Dio()..interceptors.add(httpLogInterceptor);
+
+
+⸻
+
+3. Open the dashboard
+
+Anywhere in your app:
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) => const HttpDashboardViewer(),
+  ),
+);
+
+
+⸻
+
+📷 Screenshots (Coming Soon)
+
+Request List Detail View Re-send
+(WIP) (WIP) (WIP)
+
+
+⸻
+
+🔧 Planned Features
+ • Support for http and chopper
+ • Export logs as JSON
+ • Request “favorites” and presets
+ • Timeline view with status color indicators
+
+⸻
+
+🧪 Example Project
+
+An example app using Dio + Retrofit is available in the /example directory.
+
+⸻
+
+MIT License © 2025 [Pregum ]
