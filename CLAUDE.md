@@ -34,8 +34,6 @@ mise
 
 ## Architecture
 
-The package currently contains a minimal `Calculator` class as a placeholder. The project structure follows standard Flutter package conventions:
-
 - `lib/` - Main library code, with the primary export at `lib/http_sandbox_viewer.dart`
 - `test/` - Unit tests using the `flutter_test` framework
 - `pubspec.yaml` - Package configuration with Flutter SDK ^3.32.2 requirement
