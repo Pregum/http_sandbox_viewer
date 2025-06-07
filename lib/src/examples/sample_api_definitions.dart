@@ -1,0 +1,306 @@
+import '../models/api_definition.dart';
+import '../builders/simple_api_builder.dart';
+
+/// Pre-built API definitions for common testing scenarios.
+/// 
+/// This class provides several ready-to-use API definitions that can be
+/// used for testing and demonstration purposes.
+class SampleApiDefinitions {
+  /// Creates a sample JSONPlaceholder API definition using the simple builder.
+  static ApiDefinition jsonPlaceholder() {
+    return SimpleApiBuilder(
+      title: 'JSONPlaceholder API',
+      baseUrl: 'https://jsonplaceholder.typicode.com',
+      description: 'Fake online REST API for testing and prototyping',
+    )
+        .get('/posts', 
+            name: 'Get All Posts',
+            description: 'Retrieve all posts',
+            queryParams: ['userId', '_limit', '_start'],
+            tags: ['posts', 'read'],
+            responseType: 'List<Post>')
+        .get('/posts/{id}',
+            name: 'Get Post by ID', 
+            description: 'Retrieve a specific post',
+            tags: ['posts', 'read'],
+            responseType: 'Post')
+        .post('/posts',
+            name: 'Create Post',
+            description: 'Create a new post',
+            tags: ['posts', 'write'],
+            responseType: 'Post')
+        .put('/posts/{id}',
+            name: 'Update Post',
+            description: 'Update an existing post',
+            tags: ['posts', 'write'],
+            responseType: 'Post')
+        .delete('/posts/{id}',
+            name: 'Delete Post',
+            description: 'Delete a post',
+            tags: ['posts', 'write'],
+            responseType: 'void')
+        .get('/users',
+            name: 'Get All Users',
+            description: 'Retrieve all users',
+            tags: ['users', 'read'],
+            responseType: 'List<User>')
+        .get('/users/{id}',
+            name: 'Get User by ID',
+            description: 'Retrieve a specific user',
+            tags: ['users', 'read'],
+            responseType: 'User')
+        .get('/comments',
+            name: 'Get Comments',
+            description: 'Retrieve comments',
+            queryParams: ['postId', '_limit'],
+            tags: ['comments', 'read'],
+            responseType: 'List<Comment>')
+        .build();
+  }
+  
+  /// Creates a CRUD API for posts using the convenience method.
+  static ApiDefinition postsCrud() {
+    return SimpleApiBuilder.crud(
+      title: 'Posts CRUD API',
+      baseUrl: 'https://api.example.com',
+      resource: 'posts',
+      description: 'Complete CRUD operations for blog posts',
+      listQueryParams: ['author', 'category', 'published'],
+      includeSearch: true,
+    ).build();
+  }
+  
+  /// Creates a CRUD API for users.
+  static ApiDefinition usersCrud() {
+    return SimpleApiBuilder.crud(
+      title: 'Users CRUD API',
+      baseUrl: 'https://api.example.com',
+      resource: 'users',
+      description: 'User management API',
+      listQueryParams: ['role', 'status', 'department'],
+      includeSearch: true,
+    ).build();
+  }
+  
+  /// Creates a comprehensive e-commerce API definition.
+  static ApiDefinition ecommerce() {
+    return SimpleApiBuilder(
+      title: 'E-commerce API',
+      baseUrl: 'https://shop.example.com/api',
+      description: 'Comprehensive e-commerce API with products, orders, and user management',
+    )
+        // Products
+        .get('/products',
+            name: 'Get Products',
+            queryParams: ['category', 'price_min', 'price_max', 'search', '_limit', '_offset'],
+            tags: ['products', 'read'],
+            responseType: 'List<Product>')
+        .get('/products/{id}',
+            name: 'Get Product Details',
+            tags: ['products', 'read'],
+            responseType: 'Product')
+        .get('/products/{id}/reviews',
+            name: 'Get Product Reviews',
+            queryParams: ['rating', '_limit'],
+            tags: ['products', 'reviews', 'read'],
+            responseType: 'List<Review>')
+        
+        // Categories
+        .get('/categories',
+            name: 'Get Categories',
+            tags: ['categories', 'read'],
+            responseType: 'List<Category>')
+        .get('/categories/{id}/products',
+            name: 'Get Products by Category',
+            queryParams: ['sort', '_limit'],
+            tags: ['categories', 'products', 'read'],
+            responseType: 'List<Product>')
+        
+        // Orders
+        .get('/orders',
+            name: 'Get Orders',
+            queryParams: ['status', 'user_id', 'date_from', 'date_to'],
+            headerParams: ['Authorization'],
+            tags: ['orders', 'read'],
+            responseType: 'List<Order>')
+        .get('/orders/{id}',
+            name: 'Get Order Details',
+            headerParams: ['Authorization'],
+            tags: ['orders', 'read'],
+            responseType: 'Order')
+        .post('/orders',
+            name: 'Create Order',
+            headerParams: ['Authorization'],
+            tags: ['orders', 'write'],
+            responseType: 'Order')
+        .put('/orders/{id}',
+            name: 'Update Order',
+            headerParams: ['Authorization'],
+            tags: ['orders', 'write'],
+            responseType: 'Order')
+        
+        // Cart
+        .get('/cart',
+            name: 'Get Cart',
+            headerParams: ['Authorization'],
+            tags: ['cart', 'read'],
+            responseType: 'Cart')
+        .post('/cart/items',
+            name: 'Add to Cart',
+            headerParams: ['Authorization'],
+            tags: ['cart', 'write'],
+            responseType: 'CartItem')
+        .put('/cart/items/{id}',
+            name: 'Update Cart Item',
+            headerParams: ['Authorization'],
+            tags: ['cart', 'write'],
+            responseType: 'CartItem')
+        .delete('/cart/items/{id}',
+            name: 'Remove from Cart',
+            headerParams: ['Authorization'],
+            tags: ['cart', 'write'],
+            responseType: 'void')
+        
+        // User Profile
+        .get('/profile',
+            name: 'Get User Profile',
+            headerParams: ['Authorization'],
+            tags: ['user', 'read'],
+            responseType: 'User')
+        .put('/profile',
+            name: 'Update Profile',
+            headerParams: ['Authorization'],
+            tags: ['user', 'write'],
+            responseType: 'User')
+        .get('/profile/addresses',
+            name: 'Get User Addresses',
+            headerParams: ['Authorization'],
+            tags: ['user', 'addresses', 'read'],
+            responseType: 'List<Address>')
+        .post('/profile/addresses',
+            name: 'Add Address',
+            headerParams: ['Authorization'],
+            tags: ['user', 'addresses', 'write'],
+            responseType: 'Address')
+        
+        .build();
+  }
+  
+  /// Creates a social media API definition.
+  static ApiDefinition socialMedia() {
+    return SimpleApiBuilder(
+      title: 'Social Media API',
+      baseUrl: 'https://social.example.com/api',
+      description: 'Social media platform API for posts, likes, and follows',
+    )
+        // Timeline
+        .get('/timeline',
+            name: 'Get Timeline',
+            queryParams: ['_limit', '_offset'],
+            headerParams: ['Authorization'],
+            tags: ['timeline', 'read'],
+            responseType: 'List<Post>')
+        .get('/timeline/trending',
+            name: 'Get Trending Posts',
+            queryParams: ['period', '_limit'],
+            tags: ['timeline', 'trending', 'read'],
+            responseType: 'List<Post>')
+        
+        // Posts
+        .get('/posts/{id}',
+            name: 'Get Post',
+            tags: ['posts', 'read'],
+            responseType: 'Post')
+        .post('/posts',
+            name: 'Create Post',
+            headerParams: ['Authorization'],
+            tags: ['posts', 'write'],
+            responseType: 'Post')
+        .put('/posts/{id}',
+            name: 'Update Post',
+            headerParams: ['Authorization'],
+            tags: ['posts', 'write'],
+            responseType: 'Post')
+        .delete('/posts/{id}',
+            name: 'Delete Post',
+            headerParams: ['Authorization'],
+            tags: ['posts', 'write'],
+            responseType: 'void')
+        
+        // Interactions
+        .post('/posts/{id}/like',
+            name: 'Like Post',
+            headerParams: ['Authorization'],
+            hasBody: false,
+            tags: ['posts', 'interactions', 'write'],
+            responseType: 'void')
+        .delete('/posts/{id}/like',
+            name: 'Unlike Post',
+            headerParams: ['Authorization'],
+            tags: ['posts', 'interactions', 'write'],
+            responseType: 'void')
+        .get('/posts/{id}/comments',
+            name: 'Get Comments',
+            queryParams: ['_limit', '_offset'],
+            tags: ['posts', 'comments', 'read'],
+            responseType: 'List<Comment>')
+        .post('/posts/{id}/comments',
+            name: 'Add Comment',
+            headerParams: ['Authorization'],
+            tags: ['posts', 'comments', 'write'],
+            responseType: 'Comment')
+        
+        // Users and Follows
+        .get('/users/{id}',
+            name: 'Get User Profile',
+            tags: ['users', 'read'],
+            responseType: 'User')
+        .get('/users/{id}/posts',
+            name: 'Get User Posts',
+            queryParams: ['_limit', '_offset'],
+            tags: ['users', 'posts', 'read'],
+            responseType: 'List<Post>')
+        .post('/users/{id}/follow',
+            name: 'Follow User',
+            headerParams: ['Authorization'],
+            hasBody: false,
+            tags: ['users', 'follows', 'write'],
+            responseType: 'void')
+        .delete('/users/{id}/follow',
+            name: 'Unfollow User',
+            headerParams: ['Authorization'],
+            tags: ['users', 'follows', 'write'],
+            responseType: 'void')
+        .get('/users/{id}/followers',
+            name: 'Get Followers',
+            queryParams: ['_limit', '_offset'],
+            tags: ['users', 'followers', 'read'],
+            responseType: 'List<User>')
+        .get('/users/{id}/following',
+            name: 'Get Following',
+            queryParams: ['_limit', '_offset'],
+            tags: ['users', 'following', 'read'],
+            responseType: 'List<User>')
+        
+        .build();
+  }
+  
+  /// Returns all sample API definitions.
+  static List<ApiDefinition> all() {
+    return [
+      jsonPlaceholder(),
+      postsCrud(),
+      usersCrud(),
+      ecommerce(),
+      socialMedia(),
+    ];
+  }
+  
+  /// Returns a subset of sample APIs suitable for quick testing.
+  static List<ApiDefinition> quickStart() {
+    return [
+      jsonPlaceholder(),
+      postsCrud(),
+    ];
+  }
+}

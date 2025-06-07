@@ -1,4 +1,4 @@
-library;
+library http_sandbox_viewer;
 
 export 'src/models/http_request_record.dart';
 export 'src/models/api_definition.dart';
@@ -10,3 +10,7 @@ export 'src/widgets/request_detail_view.dart';
 export 'src/widgets/request_execution_form.dart';
 export 'src/widgets/api_definitions_dashboard.dart';
 export 'src/widgets/api_endpoint_execution_form.dart';
+export 'src/annotations/api_service.dart' hide ApiService;
+export 'src/generators/retrofit_inspector.dart';
+export 'src/builders/simple_api_builder.dart';
+export 'src/examples/sample_api_definitions.dart';
