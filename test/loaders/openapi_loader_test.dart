@@ -176,7 +176,7 @@ void main() {
 
         final result = OpenApiLoader.fromJsonString(jsonSpec);
         expect(result, isNotNull);
-        expect(result!.services.first.baseUrl, equals('https://api.example.com'));
+        expect(result!.services.first.baseUrl, equals('https://jsonplaceholder.typicode.com'));
       });
 
       test('should override base URL when provided', () {

@@ -138,7 +138,7 @@ void main() {
         services: [
           ApiService(
             name: 'Test Service',
-            baseUrl: 'https://api.example.com',
+            baseUrl: 'https://jsonplaceholder.typicode.com',
             endpoints: [endpoint1, endpoint2, endpoint3],
           ),
         ],
@@ -187,7 +187,7 @@ void main() {
         services: [
           ApiService(
             name: 'Test Service',
-            baseUrl: 'https://api.example.com',
+            baseUrl: 'https://jsonplaceholder.typicode.com',
             endpoints: [endpoint1, endpoint2, endpoint3],
           ),
         ],

@@ -24,7 +24,7 @@ void main() {
       final request = HttpRequestRecord(
         id: 'test-123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {'Content-Type': 'application/json'},
         timestamp: DateTime.now(),
       );
@@ -35,7 +35,7 @@ void main() {
       expect(service.records.length, 1);
       expect(service.records.first.id, 'test-123');
       expect(service.records.first.method, 'GET');
-      expect(service.records.first.url, 'https://api.example.com/test');
+      expect(service.records.first.url, 'https://jsonplaceholder.typicode.com/test');
     });
 
     test('should add multiple requests to history', () {
@@ -45,7 +45,7 @@ void main() {
       final request1 = HttpRequestRecord(
         id: 'test-1',
         method: 'GET',
-        url: 'https://api.example.com/users',
+        url: 'https://jsonplaceholder.typicode.com/users',
         headers: {},
         timestamp: DateTime.now(),
       );
@@ -55,7 +55,7 @@ void main() {
       final request2 = HttpRequestRecord(
         id: 'test-2',
         method: 'POST',
-        url: 'https://api.example.com/posts',
+        url: 'https://jsonplaceholder.typicode.com/posts',
         headers: {},
         timestamp: DateTime.now(),
       );
@@ -65,8 +65,8 @@ void main() {
       expect(service.records.length, 2);
       
       final urls = service.records.map((r) => r.url).toList();
-      expect(urls, contains('https://api.example.com/users'));
-      expect(urls, contains('https://api.example.com/posts'));
+      expect(urls, contains('https://jsonplaceholder.typicode.com/users'));
+      expect(urls, contains('https://jsonplaceholder.typicode.com/posts'));
     });
 
     test('should clear all records', () {

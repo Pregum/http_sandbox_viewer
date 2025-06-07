@@ -214,7 +214,7 @@ void main() {
 
       final service = ApiService(
         name: 'User Service',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         endpoints: [endpoint],
         description: 'User management API',
         tags: ['users'],
@@ -222,7 +222,7 @@ void main() {
       );
 
       expect(service.name, 'User Service');
-      expect(service.baseUrl, 'https://api.example.com');
+      expect(service.baseUrl, 'https://jsonplaceholder.typicode.com');
       expect(service.endpoints, [endpoint]);
       expect(service.description, 'User management API');
       expect(service.tags, ['users']);
@@ -241,7 +241,7 @@ void main() {
 
       final service = ApiService(
         name: 'User Service',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         endpoints: [endpoint],
         tags: ['service'],
       );
@@ -275,12 +275,12 @@ void main() {
 
       final service1 = ApiService(
         name: 'User Service',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         endpoints: [endpoint1],
       );
       final service2 = ApiService(
         name: 'Post Service',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         endpoints: [endpoint2],
       );
 
@@ -308,7 +308,7 @@ void main() {
 
       final service = ApiService(
         name: 'Service',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         endpoints: [endpoint1, endpoint2],
         tags: ['api'],
       );
@@ -340,7 +340,7 @@ void main() {
 
       final definition = ApiDefinitionBuilder.fromRetrofitService(
         serviceName: 'UserApi',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
         endpoints: [endpoint],
         description: 'User API service',
         defaultHeaders: {'Authorization': 'Bearer token'},
@@ -349,7 +349,7 @@ void main() {
       expect(definition.title, 'UserApi');
       expect(definition.services.length, 1);
       expect(definition.services.first.name, 'UserApi');
-      expect(definition.services.first.baseUrl, 'https://api.example.com');
+      expect(definition.services.first.baseUrl, 'https://jsonplaceholder.typicode.com');
       expect(definition.services.first.endpoints, [endpoint]);
       expect(definition.services.first.description, 'User API service');
       expect(definition.services.first.defaultHeaders, {'Authorization': 'Bearer token'});
