@@ -1,6 +1,6 @@
 name: http_sandbox_viewer
 description: "A Flutter package for debugging HTTP requests and responses with Swagger-like API definitions for Retrofit + Dio."
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/Pregum/http_sandbox_viewer
 repository: https://github.com/Pregum/http_sandbox_viewer
 issue_tracker: https://github.com/Pregum/http_sandbox_viewer/issues

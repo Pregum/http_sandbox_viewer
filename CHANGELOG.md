@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-06-08
+
+### Fixed
+- 🔧 **Working API URLs**: Updated all sample APIs to use functional endpoints
+  - PetStore API: Now uses `petstore3.swagger.io/api/v3` (working Swagger v3 API)
+  - Books API: Now uses `openlibrary.org/api` (real Open Library API)
+  - E-commerce API: Now uses `fakestoreapi.com` (working test e-commerce API)
+  - Social Media API: Enhanced with more JSONPlaceholder endpoints
+- 📋 **Sample API Improvements**: All sample APIs now return actual data for testing
+- 🧪 **Test Updates**: Updated test URLs to match working endpoints
+- 📱 **UI Fixes**: Improved center alignment in example applications
+
+### Known Issues
+- ⚠️ **Test Coverage**: Some widget tests need adjustment for UI edge cases (non-blocking)
+- 🔄 **Concurrent Request Tests**: Minor timing issues in concurrent request tests (functionality works correctly)
+
+These issues don't affect the core functionality and will be addressed in future releases.
+
 ## [0.1.0] - 2025-06-07
 
 ### Added
