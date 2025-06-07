@@ -5,7 +5,46 @@ import '../services/http_records_service.dart';
 import 'request_detail_view.dart';
 import 'api_definitions_dashboard.dart';
 
+/// The main dashboard widget for viewing HTTP requests and API definitions.
+/// 
+/// This widget provides a comprehensive interface for debugging HTTP traffic
+/// and exploring API documentation. It features two main tabs:
+/// 
+/// 1. **History Tab**: Shows all captured HTTP requests and responses
+/// 2. **API Definitions Tab**: Displays API documentation and allows request execution
+/// 
+/// ## Usage
+/// 
+/// ```dart
+/// // Basic usage - just show HTTP history
+/// Navigator.push(
+///   context,
+///   MaterialPageRoute(
+///     builder: (context) => const HttpSandboxDashboard(),
+///   ),
+/// );
+/// 
+/// // With API definitions
+/// Navigator.push(
+///   context,
+///   MaterialPageRoute(
+///     builder: (context) => HttpSandboxDashboard(
+///       apiDefinitions: [
+///         myApiDefinition,
+///         anotherApiDefinition,
+///       ],
+///     ),
+///   ),
+/// );
+/// ```
+/// 
+/// The dashboard automatically loads and displays all HTTP requests that have
+/// been captured by [HttpSandboxInterceptor]. The API definitions tab is only
+/// shown if [apiDefinitions] are provided.
 class HttpSandboxDashboard extends StatefulWidget {
+  /// Optional list of API definitions to display in the API tab.
+  /// 
+  /// If null or empty, only the History tab will be shown.
   final List<ApiDefinition>? apiDefinitions;
 
   const HttpSandboxDashboard({

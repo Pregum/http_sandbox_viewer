@@ -2,6 +2,27 @@ import 'package:dio/dio.dart';
 import '../models/http_request_record.dart';
 import '../services/http_records_service.dart';
 
+/// A Dio interceptor that captures and logs HTTP requests and responses.
+/// 
+/// This interceptor automatically records all HTTP traffic passing through
+/// the Dio instance it's attached to, making it available for debugging
+/// and inspection in the HTTP Sandbox Dashboard.
+/// 
+/// ## Usage
+/// 
+/// ```dart
+/// final dio = Dio();
+/// dio.interceptors.add(HttpSandboxInterceptor());
+/// ```
+/// 
+/// The interceptor will:
+/// - Capture request details (method, URL, headers, body)
+/// - Record response data (status code, headers, body)
+/// - Track request timing and duration
+/// - Handle both successful responses and errors
+/// 
+/// All captured data is stored in [HttpRecordsService] and can be viewed
+/// using the [HttpSandboxDashboard] widget.
 class HttpSandboxInterceptor extends Interceptor {
   final HttpRecordsService _recordsService = HttpRecordsService.instance;
 
