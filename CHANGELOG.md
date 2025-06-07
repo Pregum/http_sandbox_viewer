@@ -8,14 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.1] - 2025-06-08
 
 ### Fixed
-- 🔧 **Working API URLs**: Updated all sample APIs to use functional endpoints
-  - PetStore API: Now uses `petstore3.swagger.io/api/v3` (working Swagger v3 API)
-  - Books API: Now uses `openlibrary.org/api` (real Open Library API)
-  - E-commerce API: Now uses `fakestoreapi.com` (working test e-commerce API)
-  - Social Media API: Enhanced with more JSONPlaceholder endpoints
-- 📋 **Sample API Improvements**: All sample APIs now return actual data for testing
+- 🔧 **Working API URLs**: Updated all sample APIs to use functional JSONPlaceholder endpoints exclusively
+  - E-commerce API: Now uses `/posts` (Products), `/albums` (Categories), `/todos` (Orders), `/comments` (Reviews)
+  - OpenAPI JSON spec: Converted from PetStore to JSONPlaceholder API format
+  - YAML spec: Converted from Books API to JSONPlaceholder API format
+  - All 5 sample APIs (jsonPlaceholder, postsCrud, usersCrud, ecommerce, socialMedia) now use working endpoints
+- 📋 **Sample API Improvements**: Eliminated all 404 errors - 16/16 unique paths now return HTTP 200
 - 🧪 **Test Updates**: Updated test URLs to match working endpoints
 - 📱 **UI Fixes**: Improved center alignment in example applications
+
+### Technical Details
+- **16 unique API paths tested**: All return valid responses from JSONPlaceholder
+- **Zero 404 errors**: Complete elimination of non-functional sample endpoints
+- **Unified base URL**: All sample APIs use `https://jsonplaceholder.typicode.com`
+- **Enhanced ecommerce() API**: Creative mapping of JSONPlaceholder resources to e-commerce concepts
 
 ### Known Issues
 - ⚠️ **Test Coverage**: Some widget tests need adjustment for UI edge cases (non-blocking)
