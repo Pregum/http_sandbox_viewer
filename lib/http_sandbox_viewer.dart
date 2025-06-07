@@ -5,3 +5,4 @@ export 'src/interceptors/http_sandbox_interceptor.dart';
 export 'src/services/http_records_service.dart';
 export 'src/widgets/http_sandbox_dashboard.dart';
 export 'src/widgets/request_detail_view.dart';
+export 'src/widgets/request_execution_form.dart';

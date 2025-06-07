@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/http_request_record.dart';
+import 'request_execution_form.dart';
 
 class RequestDetailView extends StatefulWidget {
   final HttpRequestRecord record;
@@ -34,6 +35,11 @@ class _RequestDetailViewState extends State<RequestDetailView>
       appBar: AppBar(
         title: Text('${widget.record.method} Request'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.play_arrow),
+            onPressed: _openExecutionForm,
+            tooltip: 'Execute Request',
+          ),
           IconButton(
             icon: const Icon(Icons.copy),
             onPressed: _copyRequestAsCurl,
@@ -228,6 +234,14 @@ class _RequestDetailViewState extends State<RequestDetailView>
           ),
         ),
       ],
+    );
+  }
+
+  void _openExecutionForm() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => RequestExecutionForm(record: widget.record),
+      ),
     );
   }
 
