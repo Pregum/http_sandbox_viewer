@@ -583,6 +583,35 @@ class _RequestExecutionFormState extends State<RequestExecutionForm> {
         duration: 0,
       );
       
+      // Save error requests to history as well
+      final headers = <String, String>{};
+      for (final entry in _headerControllers.entries) {
+        if (entry.key.isNotEmpty && entry.value.text.isNotEmpty) {
+          headers[entry.key] = entry.value.text;
+        }
+      }
+      
+      dynamic requestBody;
+      if (_shouldShowBody() && _bodyController.text.isNotEmpty) {
+        try {
+          requestBody = jsonDecode(_bodyController.text);
+        } catch (e) {
+          requestBody = _bodyController.text;
+        }
+      }
+      
+      final requestRecord = HttpRequestRecord(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        method: _selectedMethod,
+        url: _urlController.text,
+        headers: Map<String, dynamic>.from(headers),
+        body: requestBody,
+        timestamp: DateTime.now(),
+        response: responseRecord,
+      );
+      
+      HttpRecordsService.instance.addRequest(requestRecord);
+      
       setState(() {
         _executionResult = responseRecord;
       });

@@ -567,6 +567,19 @@ class _ApiEndpointExecutionFormState extends State<ApiEndpointExecutionForm> {
         duration: 0,
       );
       
+      // Save error requests to history as well
+      final requestRecord = HttpRequestRecord(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        method: widget.endpoint.methodString,
+        url: _buildUrl(),
+        headers: Map<String, dynamic>.from(_buildHeaders()),
+        body: _buildRequestBody(),
+        timestamp: DateTime.now(),
+        response: responseRecord,
+      );
+      
+      HttpRecordsService.instance.addRequest(requestRecord);
+      
       setState(() {
         _executionResult = responseRecord;
       });
