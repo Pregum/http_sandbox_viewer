@@ -1,5 +1,3 @@
-library;
-
 export 'src/models/http_request_record.dart';
 export 'src/models/api_definition.dart';
 export 'src/interceptors/http_sandbox_interceptor.dart';
