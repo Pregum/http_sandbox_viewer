@@ -1,0 +1,23 @@
+name: http_sandbox_viewer_example
+description: Example app for http_sandbox_viewer package.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.1.2 <4.0.0"
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^5.4.0
+  http_sandbox_viewer:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
