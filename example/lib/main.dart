@@ -46,41 +46,52 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('HTTP Sandbox Example'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Make HTTP requests to see them in the sandbox:',
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _makeGetRequest,
-              child: const Text('Make GET Request'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _makePostRequest,
-              child: const Text('Make POST Request'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _makeErrorRequest,
-              child: const Text('Make Error Request'),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: _openSandbox,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Make HTTP requests to see them in the sandbox:',
+                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
               ),
-              child: const Text('Open HTTP Sandbox'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _makeGetRequest,
+                child: const Text('Make GET Request'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _makePostRequest,
+                child: const Text('Make POST Request'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _makeErrorRequest,
+                child: const Text('Make Error Request'),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: _openSandbox,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Open HTTP Sandbox'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _openOpenApiSamples,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Open OpenAPI/YAML Samples'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -121,10 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _openSandbox() {
-    // Option 1: Use pre-built sample API definitions (includes OpenAPI examples)
-    // final sampleApiDefinitions = SampleApiDefinitions.all(); // All samples including OpenAPI
-    
-    // Option 2: Create custom API definitions using the simple builder
+    // Create custom API definitions using the simple builder
     final customApiDefinitions = [
       // Simple API builder - much more concise!
       SimpleApiBuilder(
@@ -164,17 +172,34 @@ class _MyHomePageState extends State<MyHomePage> {
         listQueryParams: ['postId', 'email'],
         includeSearch: true,
       ).build(),
-      
-      // Option 3: Use OpenAPI samples (PetStore and Books API in YAML format)
-      SampleApiDefinitions.openApiPetStore(),
-      SampleApiDefinitions.openApiYamlExample(),
     ];
 
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => HttpSandboxDashboard(
-          // Use either the sample definitions or custom ones
-          apiDefinitions: customApiDefinitions, // or sampleApiDefinitions
+          apiDefinitions: customApiDefinitions,
+        ),
+      ),
+    );
+  }
+
+  void _openOpenApiSamples() {
+    // OpenAPI/YAML specific samples
+    final openApiDefinitions = [
+      // PetStore API - Classic OpenAPI example
+      SampleApiDefinitions.openApiPetStore(),
+      
+      // Books API - YAML format example
+      SampleApiDefinitions.openApiYamlExample(),
+      
+      // You can also include all samples if you want
+      // ...SampleApiDefinitions.all(),
+    ];
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => HttpSandboxDashboard(
+          apiDefinitions: openApiDefinitions,
         ),
       ),
     );

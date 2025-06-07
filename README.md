@@ -243,6 +243,79 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
+## 🎮 Sample Applications
+
+The package includes example applications showing different usage patterns:
+
+### Basic Example (example/lib/main.dart)
+A simple app demonstrating basic HTTP sandbox functionality with custom API definitions built using `SimpleApiBuilder`.
+
+**Features:**
+- HTTP request interception with `HttpSandboxInterceptor`
+- Custom API definitions using builder pattern
+- Centered UI layout with clear navigation
+
+**To run:**
+```bash
+cd example
+flutter run
+```
+
+### OpenAPI/YAML Sample Screen
+The example app includes a dedicated button for exploring OpenAPI and YAML format samples:
+
+**Included Samples:**
+- **PetStore API**: Classic OpenAPI specification example with full CRUD operations
+- **Books API**: YAML format example demonstrating genre enums and constraints
+
+**Usage in your app:**
+```dart
+void _openOpenApiSamples() {
+  final openApiDefinitions = [
+    SampleApiDefinitions.openApiPetStore(),    // Classic OpenAPI example
+    SampleApiDefinitions.openApiYamlExample(), // YAML format example
+  ];
+
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => HttpSandboxDashboard(
+        apiDefinitions: openApiDefinitions,
+      ),
+    ),
+  );
+}
+```
+
+### Quick Start Samples
+Use pre-built sample API definitions for immediate testing:
+
+```dart
+// Minimal setup with 2 APIs
+final quickStartApis = SampleApiDefinitions.quickStart();
+
+// All available samples (7+ APIs)
+final allApis = SampleApiDefinitions.all();
+
+// Specific samples
+final customSamples = [
+  SampleApiDefinitions.jsonPlaceholder(),  // Real working API
+  SampleApiDefinitions.ecommerce(),        // Complete e-commerce example
+  SampleApiDefinitions.socialMedia(),      // Social platform API
+];
+```
+
+### Sample API Categories
+
+| Sample | Type | Description | Endpoints |
+|--------|------|-------------|-----------|
+| **JSONPlaceholder** | Working API | Real REST API for testing | 8 endpoints |
+| **Posts CRUD** | Template | Basic blog post operations | 6 endpoints |
+| **Users CRUD** | Template | User management API | 6 endpoints |
+| **E-commerce** | Complex | Shopping cart, orders, products | 15+ endpoints |
+| **Social Media** | Complex | Posts, likes, follows, timeline | 18+ endpoints |
+| **PetStore (OpenAPI)** | OpenAPI | Classic Swagger example | 8 endpoints |
+| **Books (YAML)** | OpenAPI | YAML format demonstration | 7 endpoints |
+
 ## 🎨 Features Overview
 
 ### Dashboard View
