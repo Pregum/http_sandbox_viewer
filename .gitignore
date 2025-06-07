@@ -29,3 +29,9 @@ migrate_working_dir/
 .flutter-plugins
 .flutter-plugins-dependencies
 build/
+
+# Example app specific (should not be in library git)
+example/pubspec.lock
+example/macos/Podfile.lock
+example/macos/Pods/
+example/build/
