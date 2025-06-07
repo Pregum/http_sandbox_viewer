@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/http_request_record.dart';
 
-class HttpRecordsService {
+class HttpRecordsService extends ChangeNotifier {
   static final HttpRecordsService _instance = HttpRecordsService._internal();
   static HttpRecordsService get instance => _instance;
   HttpRecordsService._internal();
@@ -15,6 +16,7 @@ class HttpRecordsService {
   void addRequest(HttpRequestRecord record) {
     _records.insert(0, record);
     _saveToStorage();
+    notifyListeners(); // Notify UI to update
   }
 
   void updateRequestWithResponse(String requestId, HttpResponseRecord response) {
@@ -22,12 +24,14 @@ class HttpRecordsService {
     if (index != -1) {
       _records[index] = _records[index].copyWith(response: response);
       _saveToStorage();
+      notifyListeners(); // Notify UI to update
     }
   }
 
   void clearRecords() {
     _records.clear();
     _saveToStorage();
+    notifyListeners(); // Notify UI to update
   }
 
   Future<void> loadFromStorage() async {

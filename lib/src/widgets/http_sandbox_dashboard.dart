@@ -27,10 +27,21 @@ class _HttpSandboxDashboardState extends State<HttpSandboxDashboard>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _recordsService.loadFromStorage();
+    
+    // Listen to changes in the records service
+    _recordsService.addListener(_onRecordsChanged);
+  }
+  
+  void _onRecordsChanged() {
+    // Rebuild the widget when records change
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
+    _recordsService.removeListener(_onRecordsChanged);
     _tabController.dispose();
     super.dispose();
   }
@@ -44,9 +55,7 @@ class _HttpSandboxDashboardState extends State<HttpSandboxDashboard>
           IconButton(
             icon: const Icon(Icons.clear_all),
             onPressed: () {
-              setState(() {
-                _recordsService.clearRecords();
-              });
+              _recordsService.clearRecords(); // No setState needed, service will notify
             },
             tooltip: 'Clear all records',
           ),
