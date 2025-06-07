@@ -39,3 +39,7 @@ mise
 - `pubspec.yaml` - Package configuration with Flutter SDK ^3.32.2 requirement
 
 The project uses `flutter_lints` for code analysis and follows standard Flutter package development practices.
+
+## Best Practices
+
+- Flutterのプロジェクトにて操作が完了した時には flutter analyzerコマンドを叩いて、エラーがないことを確認して下さい。ある場合はそれが消えるまでもしくはその原因を特定するところまで対応をお願いします
