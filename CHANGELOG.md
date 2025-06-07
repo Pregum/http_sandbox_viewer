@@ -17,11 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🧪 **Test Updates**: Updated test URLs to match working endpoints
 - 📱 **UI Fixes**: Improved center alignment in example applications
 
+### Added
+- 📦 **Package Optimization**: Added `.pubignore` to exclude development files from published package
+  - Excluded development files: `summary.txt`, `mise.toml`, `CLAUDE.md`
+  - Excluded build artifacts: `build/` directory, `*.iml` files
+  - Excluded platform-specific files: `example/macos/` directory
+  - **Package size reduced**: From 232KB to 68KB (70% reduction)
+
 ### Technical Details
 - **16 unique API paths tested**: All return valid responses from JSONPlaceholder
 - **Zero 404 errors**: Complete elimination of non-functional sample endpoints
 - **Unified base URL**: All sample APIs use `https://jsonplaceholder.typicode.com`
 - **Enhanced ecommerce() API**: Creative mapping of JSONPlaceholder resources to e-commerce concepts
+- **Optimized package**: Clean, production-ready package with minimal size
 
 ### Known Issues
 - ⚠️ **Test Coverage**: Some widget tests need adjustment for UI edge cases (non-blocking)
