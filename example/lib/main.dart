@@ -121,9 +121,134 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _openSandbox() {
+    // Create sample API definitions for demonstration
+    final sampleApiDefinitions = [
+      ApiDefinitionBuilder.fromRetrofitService(
+        serviceName: 'JSONPlaceholder API',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
+        description: 'Sample API for testing and learning',
+        endpoints: [
+          ApiDefinitionBuilder.endpoint(
+            name: 'Get All Posts',
+            path: '/posts',
+            method: HttpMethod.get,
+            description: 'Retrieve all posts from the API',
+            summary: 'Fetch a list of all available posts',
+            tags: ['posts', 'read'],
+            parameters: [
+              ApiDefinitionBuilder.queryParam(
+                'userId',
+                dataType: int,
+                description: 'Filter posts by user ID',
+              ),
+              ApiDefinitionBuilder.queryParam(
+                '_limit',
+                dataType: int,
+                description: 'Limit the number of results',
+                defaultValue: 10,
+              ),
+            ],
+            responseType: 'List<Post>',
+          ),
+          ApiDefinitionBuilder.endpoint(
+            name: 'Get Post by ID',
+            path: '/posts/{id}',
+            method: HttpMethod.get,
+            description: 'Get a specific post by its ID',
+            summary: 'Retrieve detailed information about a single post',
+            tags: ['posts', 'read'],
+            parameters: [
+              ApiDefinitionBuilder.pathParam(
+                'id',
+                dataType: int,
+                description: 'The ID of the post to retrieve',
+              ),
+            ],
+            responseType: 'Post',
+          ),
+          ApiDefinitionBuilder.endpoint(
+            name: 'Create New Post',
+            path: '/posts',
+            method: HttpMethod.post,
+            description: 'Create a new post',
+            summary: 'Add a new post to the system',
+            tags: ['posts', 'write'],
+            parameters: [
+              ApiDefinitionBuilder.bodyParam(
+                description: 'Post data including title, body, and userId',
+              ),
+            ],
+            responseType: 'Post',
+          ),
+          ApiDefinitionBuilder.endpoint(
+            name: 'Update Post',
+            path: '/posts/{id}',
+            method: HttpMethod.put,
+            description: 'Update an existing post',
+            summary: 'Modify the content of an existing post',
+            tags: ['posts', 'write'],
+            parameters: [
+              ApiDefinitionBuilder.pathParam(
+                'id',
+                dataType: int,
+                description: 'The ID of the post to update',
+              ),
+              ApiDefinitionBuilder.bodyParam(
+                description: 'Updated post data',
+              ),
+            ],
+            responseType: 'Post',
+          ),
+          ApiDefinitionBuilder.endpoint(
+            name: 'Delete Post',
+            path: '/posts/{id}',
+            method: HttpMethod.delete,
+            description: 'Delete a post',
+            summary: 'Remove a post from the system',
+            tags: ['posts', 'write'],
+            parameters: [
+              ApiDefinitionBuilder.pathParam(
+                'id',
+                dataType: int,
+                description: 'The ID of the post to delete',
+              ),
+            ],
+            responseType: 'void',
+          ),
+          ApiDefinitionBuilder.endpoint(
+            name: 'Get All Users',
+            path: '/users',
+            method: HttpMethod.get,
+            description: 'Retrieve all users',
+            summary: 'Get a list of all registered users',
+            tags: ['users', 'read'],
+            responseType: 'List<User>',
+          ),
+          ApiDefinitionBuilder.endpoint(
+            name: 'Get User by ID',
+            path: '/users/{id}',
+            method: HttpMethod.get,
+            description: 'Get a specific user by ID',
+            summary: 'Retrieve detailed user information',
+            tags: ['users', 'read'],
+            parameters: [
+              ApiDefinitionBuilder.pathParam(
+                'id',
+                dataType: int,
+                description: 'The ID of the user to retrieve',
+              ),
+            ],
+            responseType: 'User',
+          ),
+        ],
+      ),
+    ];
+
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const HttpSandboxDashboard(),
+        builder: (context) => HttpSandboxDashboard(
+          apiDefinitions: sampleApiDefinitions,
+        ),
       ),
     );
   }
