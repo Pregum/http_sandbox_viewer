@@ -1,5 +1,6 @@
 import '../models/api_definition.dart';
 import '../builders/simple_api_builder.dart';
+import '../loaders/openapi_loader.dart';
 
 /// Pre-built API definitions for common testing scenarios.
 /// 
@@ -302,5 +303,327 @@ class SampleApiDefinitions {
       jsonPlaceholder(),
       postsCrud(),
     ];
+  }
+
+  /// Creates an API definition from OpenAPI specification.
+  static ApiDefinition openApiPetStore() {
+    // Sample OpenAPI spec for Petstore API
+    final openApiSpec = {
+      "openapi": "3.0.0",
+      "info": {
+        "title": "Petstore API",
+        "description": "Sample API for a pet store",
+        "version": "1.0.0"
+      },
+      "servers": [
+        {
+          "url": "https://petstore.swagger.io/v2"
+        }
+      ],
+      "paths": {
+        "/pet": {
+          "post": {
+            "tags": ["pet"],
+            "summary": "Add a new pet",
+            "description": "Add a new pet to the store",
+            "operationId": "addPet",
+            "requestBody": {
+              "description": "Pet object to be added",
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "Successful operation",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "\$ref": "#/components/schemas/Pet"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "put": {
+            "tags": ["pet"],
+            "summary": "Update an existing pet",
+            "description": "Update an existing pet by Id",
+            "operationId": "updatePet",
+            "requestBody": {
+              "description": "Pet object to be updated",
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "Successful operation"
+              }
+            }
+          }
+        },
+        "/pet/{petId}": {
+          "get": {
+            "tags": ["pet"],
+            "summary": "Find pet by ID",
+            "description": "Returns a single pet",
+            "operationId": "getPetById",
+            "parameters": [
+              {
+                "name": "petId",
+                "in": "path",
+                "description": "ID of pet to return",
+                "required": true,
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "successful operation",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "\$ref": "#/components/schemas/Pet"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delete": {
+            "tags": ["pet"],
+            "summary": "Deletes a pet",
+            "description": "Deletes a pet by ID",
+            "operationId": "deletePet",
+            "parameters": [
+              {
+                "name": "api_key",
+                "in": "header",
+                "description": "API key for authentication",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "petId",
+                "in": "path",
+                "description": "Pet id to delete",
+                "required": true,
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            ],
+            "responses": {
+              "400": {
+                "description": "Invalid pet value"
+              }
+            }
+          }
+        },
+        "/pet/findByStatus": {
+          "get": {
+            "tags": ["pet"],
+            "summary": "Finds Pets by status",
+            "description": "Multiple status values can be provided",
+            "operationId": "findPetsByStatus",
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Status values to filter by",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "enum": ["available", "pending", "sold"],
+                  "default": "available"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "successful operation",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "\$ref": "#/components/schemas/Pet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/store/order": {
+          "post": {
+            "tags": ["store"],
+            "summary": "Place an order",
+            "description": "Place a new order in the store",
+            "operationId": "placeOrder",
+            "requestBody": {
+              "description": "Order object",
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "successful operation",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "\$ref": "#/components/schemas/Order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/store/order/{orderId}": {
+          "get": {
+            "tags": ["store"],
+            "summary": "Find order by ID",
+            "description": "Find purchase order by ID",
+            "operationId": "getOrderById",
+            "parameters": [
+              {
+                "name": "orderId",
+                "in": "path",
+                "description": "ID of order to return",
+                "required": true,
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "successful operation",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "\$ref": "#/components/schemas/Order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/user": {
+          "post": {
+            "tags": ["user"],
+            "summary": "Create user",
+            "description": "Create a new user account",
+            "operationId": "createUser",
+            "requestBody": {
+              "description": "User object to be created",
+              "required": true
+            },
+            "responses": {
+              "default": {
+                "description": "successful operation"
+              }
+            }
+          }
+        },
+        "/user/login": {
+          "get": {
+            "tags": ["user"],
+            "summary": "Logs user into the system",
+            "description": "User authentication endpoint",
+            "operationId": "loginUser",
+            "parameters": [
+              {
+                "name": "username",
+                "in": "query",
+                "description": "The username for login",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "password",
+                "in": "query",
+                "description": "The password for login",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "successful operation",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    // Convert using OpenApiLoader
+    return OpenApiLoader.fromMap(openApiSpec) ?? _fallbackPetStoreApi();
+  }
+
+  /// Fallback PetStore API definition in case OpenAPI parsing fails.
+  static ApiDefinition _fallbackPetStoreApi() {
+    return SimpleApiBuilder(
+      title: 'Petstore API (Fallback)',
+      baseUrl: 'https://petstore.swagger.io/v2',
+      description: 'Sample API for a pet store',
+    )
+        .get('/pet/findByStatus', 
+            name: 'Find Pets by Status',
+            queryParams: ['status'],
+            tags: ['pet'],
+            responseType: 'List<Pet>')
+        .get('/pet/{petId}', 
+            name: 'Get Pet by ID',
+            tags: ['pet'],
+            responseType: 'Pet')
+        .post('/pet', 
+            name: 'Add Pet',
+            tags: ['pet'],
+            responseType: 'Pet')
+        .put('/pet', 
+            name: 'Update Pet',
+            tags: ['pet'],
+            responseType: 'Pet')
+        .delete('/pet/{petId}', 
+            name: 'Delete Pet',
+            headerParams: ['api_key'],
+            tags: ['pet'])
+        .get('/store/order/{orderId}', 
+            name: 'Get Order by ID',
+            tags: ['store'],
+            responseType: 'Order')
+        .post('/store/order', 
+            name: 'Place Order',
+            tags: ['store'],
+            responseType: 'Order')
+        .post('/user', 
+            name: 'Create User',
+            tags: ['user'])
+        .get('/user/login', 
+            name: 'User Login',
+            queryParams: ['username', 'password'],
+            tags: ['user'],
+            responseType: 'String')
+        .build();
   }
 }

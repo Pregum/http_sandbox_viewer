@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/api_definition.dart';
 
 /// Inspector that analyzes Retrofit service classes to extract API definitions.
@@ -50,7 +51,8 @@ class RetrofitInspector {
         ],
       );
     } catch (e) {
-      print('Error inspecting service: $e');
+      // Error inspecting service: $e
+      debugPrint('Error inspecting service: $e');
       return null;
     }
   }

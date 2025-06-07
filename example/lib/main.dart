@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _openSandbox() {
     // Option 1: Use pre-built sample API definitions
-    final sampleApiDefinitions = SampleApiDefinitions.quickStart();
+    // final sampleApiDefinitions = SampleApiDefinitions.quickStart();
     
     // Option 2: Create custom API definitions using the simple builder
     final customApiDefinitions = [
