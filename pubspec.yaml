@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^2.2.2
   retrofit: ^4.0.3
   json_annotation: ^4.8.1
+  yaml: ^3.1.2
 
 dev_dependencies:
   flutter_test:

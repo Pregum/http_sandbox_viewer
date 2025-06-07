@@ -294,6 +294,8 @@ class SampleApiDefinitions {
       usersCrud(),
       ecommerce(),
       socialMedia(),
+      openApiPetStore(),
+      openApiYamlExample(),
     ];
   }
   
@@ -624,6 +626,263 @@ class SampleApiDefinitions {
             queryParams: ['username', 'password'],
             tags: ['user'],
             responseType: 'String')
+        .build();
+  }
+
+  /// Creates an API definition from YAML format OpenAPI specification.
+  static ApiDefinition openApiYamlExample() {
+    // Sample OpenAPI spec in YAML format (as string)
+    const openApiYaml = '''
+openapi: 3.0.0
+info:
+  title: Books API
+  description: A simple books management API (YAML format example)
+  version: 1.0.0
+servers:
+  - url: https://api.bookstore.com/v1
+paths:
+  /books:
+    get:
+      tags:
+        - books
+      summary: Get all books
+      description: Retrieve a list of all books
+      parameters:
+        - name: author
+          in: query
+          description: Filter by author name
+          required: false
+          schema:
+            type: string
+        - name: genre
+          in: query
+          description: Filter by genre
+          required: false
+          schema:
+            type: string
+            enum:
+              - fiction
+              - non-fiction
+              - mystery
+              - romance
+              - sci-fi
+        - name: limit
+          in: query
+          description: Maximum number of books to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  \$ref: '#/components/schemas/Book'
+    post:
+      tags:
+        - books
+      summary: Create a new book
+      description: Add a new book to the collection
+      requestBody:
+        description: Book object to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              \$ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                \$ref: '#/components/schemas/Book'
+  /books/{id}:
+    get:
+      tags:
+        - books
+      summary: Get book by ID
+      description: Retrieve a specific book by its ID
+      parameters:
+        - name: id
+          in: path
+          description: Book ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                \$ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    put:
+      tags:
+        - books
+      summary: Update book
+      description: Update an existing book
+      parameters:
+        - name: id
+          in: path
+          description: Book ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Updated book object
+        required: true
+        content:
+          application/json:
+            schema:
+              \$ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Book updated successfully
+        '404':
+          description: Book not found
+    delete:
+      tags:
+        - books
+      summary: Delete book
+      description: Delete a book from the collection
+      parameters:
+        - name: id
+          in: path
+          description: Book ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Book deleted successfully
+        '404':
+          description: Book not found
+  /authors:
+    get:
+      tags:
+        - authors
+      summary: Get all authors
+      description: Retrieve a list of all authors
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  \$ref: '#/components/schemas/Author'
+  /authors/{id}:
+    get:
+      tags:
+        - authors
+      summary: Get author by ID
+      description: Retrieve a specific author by their ID
+      parameters:
+        - name: id
+          in: path
+          description: Author ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                \$ref: '#/components/schemas/Author'
+        '404':
+          description: Author not found
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        genre:
+          type: string
+        publishedDate:
+          type: string
+          format: date
+        price:
+          type: number
+          format: double
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        biography:
+          type: string
+        birthDate:
+          type: string
+          format: date
+''';
+
+    // Convert YAML to ApiDefinition
+    return OpenApiLoader.fromYamlString(openApiYaml) ?? _fallbackBooksApi();
+  }
+
+  /// Fallback Books API definition in case YAML parsing fails.
+  static ApiDefinition _fallbackBooksApi() {
+    return SimpleApiBuilder(
+      title: 'Books API (Fallback)',
+      baseUrl: 'https://api.bookstore.com/v1',
+      description: 'A simple books management API',
+    )
+        .get('/books', 
+            name: 'Get All Books',
+            queryParams: ['author', 'genre', 'limit'],
+            tags: ['books'],
+            responseType: 'List<Book>')
+        .get('/books/{id}', 
+            name: 'Get Book by ID',
+            tags: ['books'],
+            responseType: 'Book')
+        .post('/books', 
+            name: 'Create Book',
+            tags: ['books'],
+            responseType: 'Book')
+        .put('/books/{id}', 
+            name: 'Update Book',
+            tags: ['books'],
+            responseType: 'Book')
+        .delete('/books/{id}', 
+            name: 'Delete Book',
+            tags: ['books'])
+        .get('/authors', 
+            name: 'Get All Authors',
+            tags: ['authors'],
+            responseType: 'List<Author>')
+        .get('/authors/{id}', 
+            name: 'Get Author by ID',
+            tags: ['authors'],
+            responseType: 'Author')
         .build();
   }
 }

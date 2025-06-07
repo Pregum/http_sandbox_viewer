@@ -88,8 +88,8 @@ class _OpenApiExamplePageState extends State<OpenApiExamplePage> {
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.code),
-                        label: const Text('カスタムOpenAPI'),
-                        onPressed: _loadCustomOpenApi,
+                        label: const Text('YAML読み込み'),
+                        onPressed: _loadFromYamlString,
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -382,115 +382,174 @@ class _OpenApiExamplePageState extends State<OpenApiExamplePage> {
     }
   }
 
-  // カスタムOpenAPI Mapから読み込む例
-  void _loadCustomOpenApi() {
+  // YAML文字列からOpenAPIを読み込む例
+  void _loadFromYamlString() {
     setState(() {
       isLoading = true;
       errorMessage = null;
     });
 
-    // カスタムOpenAPI定義（Map形式）
-    final customOpenApiSpec = {
-      "openapi": "3.0.0",
-      "info": {
-        "title": "Weather API",
-        "description": "天気情報取得API",
-        "version": "1.0.0"
-      },
-      "servers": [
-        {
-          "url": "https://api.openweathermap.org/data/2.5"
-        }
-      ],
-      "paths": {
-        "/weather": {
-          "get": {
-            "tags": ["weather"],
-            "summary": "現在の天気を取得",
-            "description": "指定した都市の現在の天気情報を取得します",
-            "parameters": [
-              {
-                "name": "q",
-                "in": "query",
-                "description": "都市名",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "appid",
-                "in": "query",
-                "description": "APIキー",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "units",
-                "in": "query",
-                "description": "単位（metric, imperial）",
-                "required": false,
-                "schema": {
-                  "type": "string",
-                  "enum": ["metric", "imperial"],
-                  "default": "metric"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "成功",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "/forecast": {
-          "get": {
-            "tags": ["weather"],
-            "summary": "天気予報を取得",
-            "description": "指定した都市の5日間天気予報を取得します",
-            "parameters": [
-              {
-                "name": "q",
-                "in": "query",
-                "description": "都市名",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "appid",
-                "in": "query",
-                "description": "APIキー",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "成功"
-              }
-            }
-          }
-        }
-      }
-    };
+    // YAML形式のOpenAPI定義
+    const weatherApiYaml = '''
+openapi: 3.0.0
+info:
+  title: Weather API
+  description: 天気情報取得API（YAML形式）
+  version: 1.0.0
+servers:
+  - url: https://api.openweathermap.org/data/2.5
+paths:
+  /weather:
+    get:
+      tags:
+        - weather
+      summary: 現在の天気を取得
+      description: 指定した都市の現在の天気情報を取得します
+      parameters:
+        - name: q
+          in: query
+          description: 都市名
+          required: true
+          schema:
+            type: string
+        - name: appid
+          in: query
+          description: APIキー
+          required: true
+          schema:
+            type: string
+        - name: units
+          in: query
+          description: 単位（metric, imperial）
+          required: false
+          schema:
+            type: string
+            enum:
+              - metric
+              - imperial
+            default: metric
+        - name: lang
+          in: query
+          description: 言語設定
+          required: false
+          schema:
+            type: string
+            enum:
+              - ja
+              - en
+              - fr
+              - de
+            default: en
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  weather:
+                    type: array
+                  main:
+                    type: object
+                  name:
+                    type: string
+  /forecast:
+    get:
+      tags:
+        - weather
+      summary: 天気予報を取得
+      description: 指定した都市の5日間天気予報を取得します
+      parameters:
+        - name: q
+          in: query
+          description: 都市名
+          required: true
+          schema:
+            type: string
+        - name: appid
+          in: query
+          description: APIキー
+          required: true
+          schema:
+            type: string
+        - name: units
+          in: query
+          description: 単位
+          required: false
+          schema:
+            type: string
+            enum:
+              - metric
+              - imperial
+        - name: cnt
+          in: query
+          description: 予報データ数（最大40）
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 40
+            default: 5
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list:
+                    type: array
+                  city:
+                    type: object
+  /onecall:
+    get:
+      tags:
+        - weather
+      summary: 詳細天気情報を取得
+      description: 緯度経度指定で詳細な天気情報を取得
+      parameters:
+        - name: lat
+          in: query
+          description: 緯度
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: lon
+          in: query
+          description: 経度
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: appid
+          in: query
+          description: APIキー
+          required: true
+          schema:
+            type: string
+        - name: exclude
+          in: query
+          description: 除外するデータ
+          required: false
+          schema:
+            type: string
+            enum:
+              - current
+              - minutely
+              - hourly
+              - daily
+              - alerts
+      responses:
+        '200':
+          description: 成功
+''';
 
     try {
-      final apiDefinition = OpenApiLoader.fromMap(
-        customOpenApiSpec,
+      final apiDefinition = OpenApiLoader.fromYamlString(
+        weatherApiYaml,
         baseUrl: 'https://api.openweathermap.org/data/2.5',
       );
       
@@ -501,13 +560,13 @@ class _OpenApiExamplePageState extends State<OpenApiExamplePage> {
         });
       } else {
         setState(() {
-          errorMessage = 'カスタムOpenAPI Mapの解析に失敗しました';
+          errorMessage = 'YAML形式OpenAPIの解析に失敗しました';
           isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'エラー: $e';
+        errorMessage = 'YAML解析エラー: $e';
         isLoading = false;
       });
     }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:yaml/yaml.dart';
 import '../models/api_definition.dart';
 
 /// Loader for OpenAPI/Swagger specifications.
@@ -24,6 +25,28 @@ class OpenApiLoader {
     }
   }
 
+  /// Loads an OpenAPI definition from a YAML string.
+  /// 
+  /// [yamlString] - The OpenAPI specification as a YAML string
+  /// [baseUrl] - Optional base URL override (if not specified in the spec)
+  /// 
+  /// Returns an [ApiDefinition] or null if parsing fails.
+  static ApiDefinition? fromYamlString(String yamlString, {String? baseUrl}) {
+    try {
+      final dynamic yamlDoc = loadYaml(yamlString);
+      if (yamlDoc is! Map) {
+        debugPrint('Error: YAML document is not a map');
+        return null;
+      }
+      // Convert YamlMap to regular Map<String, dynamic>
+      final Map<String, dynamic> spec = _yamlToMap(yamlDoc);
+      return _parseOpenApiSpec(spec, baseUrl: baseUrl);
+    } catch (e) {
+      debugPrint('Error parsing OpenAPI YAML: $e');
+      return null;
+    }
+  }
+
   /// Loads an OpenAPI definition from a Map.
   /// 
   /// [spec] - The OpenAPI specification as a Map
@@ -41,14 +64,22 @@ class OpenApiLoader {
 
   /// Loads an OpenAPI definition from an asset file.
   /// 
-  /// [assetPath] - Path to the asset file (e.g., 'assets/api/openapi.json')
+  /// [assetPath] - Path to the asset file (e.g., 'assets/api/openapi.json' or 'assets/api/openapi.yaml')
   /// [baseUrl] - Optional base URL override
   /// 
+  /// Automatically detects JSON or YAML format based on file extension.
   /// Returns an [ApiDefinition] or null if loading/parsing fails.
   static Future<ApiDefinition?> fromAsset(String assetPath, {String? baseUrl}) async {
     try {
-      final jsonString = await rootBundle.loadString(assetPath);
-      return fromJsonString(jsonString, baseUrl: baseUrl);
+      final content = await rootBundle.loadString(assetPath);
+      final extension = assetPath.toLowerCase().split('.').last;
+      
+      if (extension == 'yaml' || extension == 'yml') {
+        return fromYamlString(content, baseUrl: baseUrl);
+      } else {
+        // Default to JSON parsing for .json or unknown extensions
+        return fromJsonString(content, baseUrl: baseUrl);
+      }
     } catch (e) {
       debugPrint('Error loading OpenAPI from asset: $e');
       return null;
@@ -309,5 +340,25 @@ class OpenApiLoader {
     }
 
     return type;
+  }
+
+  /// Recursively converts YamlMap/YamlList to regular Map/List structures.
+  /// 
+  /// This is necessary because yaml package returns YamlMap/YamlList objects
+  /// which are not directly compatible with Map&lt;String, dynamic&gt; expected by our parser.
+  static dynamic _yamlToMap(dynamic yamlObject) {
+    if (yamlObject is YamlMap) {
+      final Map<String, dynamic> result = {};
+      for (final entry in yamlObject.entries) {
+        final key = entry.key.toString();
+        result[key] = _yamlToMap(entry.value);
+      }
+      return result;
+    } else if (yamlObject is YamlList) {
+      return yamlObject.map((item) => _yamlToMap(item)).toList();
+    } else {
+      // Primitive values (String, int, bool, double, null)
+      return yamlObject;
+    }
   }
 }

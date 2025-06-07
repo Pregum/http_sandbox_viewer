@@ -37,7 +37,42 @@ if (apiDefinition != null) {
 }
 ```
 
-### 2. Map形式からの読み込み
+### 2. YAML文字列からの読み込み
+
+```dart
+import 'package:http_sandbox_viewer/http_sandbox_viewer.dart';
+
+// YAML形式のOpenAPI仕様
+const openApiYaml = '''
+openapi: 3.0.0
+info:
+  title: My API
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /users:
+    get:
+      summary: Get users
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+''';
+
+// APIDefinitionに変換
+final apiDefinition = OpenApiLoader.fromYamlString(openApiYaml);
+if (apiDefinition != null) {
+  // ダッシュボードで使用
+  ApiDefinitionsDashboard(initialDefinitions: [apiDefinition])
+}
+```
+
+### 3. Map形式からの読み込み
 
 ```dart
 // Map形式のOpenAPI仕様
@@ -73,19 +108,29 @@ final openApiSpec = {
 final apiDefinition = OpenApiLoader.fromMap(openApiSpec);
 ```
 
-### 3. アセットファイルからの読み込み
+### 4. アセットファイルからの読み込み
 
 ```dart
 // pubspec.yamlにアセットを追加
 // assets:
 //   - assets/openapi/
 
-// アセットファイルから読み込み
-final apiDefinition = await OpenApiLoader.fromAsset(
+// JSON形式のアセットファイルから読み込み
+final jsonApiDefinition = await OpenApiLoader.fromAsset(
   'assets/openapi/petstore.json',
   baseUrl: 'https://petstore.swagger.io/v2', // ベースURLのオーバーライド（オプション）
 );
+
+// YAML形式のアセットファイルから読み込み（自動判定）
+final yamlApiDefinition = await OpenApiLoader.fromAsset(
+  'assets/openapi/openapi.yaml',
+  baseUrl: 'https://api.example.com',
+);
 ```
+
+**ファイル拡張子による自動判定**:
+- `.yaml`, `.yml` → YAML形式として処理
+- `.json` または その他 → JSON形式として処理
 
 ## 実用的な例
 
@@ -225,6 +270,12 @@ try {
 
 ## 対応している機能
 
+### 入力形式
+- **JSON文字列**: `OpenApiLoader.fromJsonString()`
+- **YAML文字列**: `OpenApiLoader.fromYamlString()`
+- **Map形式**: `OpenApiLoader.fromMap()`
+- **アセットファイル**: `OpenApiLoader.fromAsset()` (JSON/YAML自動判定)
+
 ### HTTPメソッド
 - GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
 
@@ -241,6 +292,13 @@ try {
 - boolean
 - array
 - object
+- enum (select options)
+
+### YAML特有の機能
+- 複数行文字列サポート
+- コメント記述対応
+- より読みやすい階層構造
+- enum値の配列記法
 
 ### レスポンス情報
 - ステータスコード
