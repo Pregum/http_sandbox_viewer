@@ -87,98 +87,112 @@ class SampleApiDefinitions {
   static ApiDefinition ecommerce() {
     return SimpleApiBuilder(
       title: 'E-commerce API',
-      baseUrl: 'https://fakestoreapi.com',
-      description: 'Comprehensive e-commerce API with products, carts, and user management',
+      baseUrl: 'https://jsonplaceholder.typicode.com',
+      description: 'E-commerce API using JSONPlaceholder endpoints for testing',
     )
-        // Products
-        .get('/products',
+        // Posts as "Products"
+        .get('/posts',
             name: 'Get Products',
-            queryParams: ['limit', 'sort'],
+            queryParams: ['userId', '_limit', '_start'],
             tags: ['products', 'read'],
             responseType: 'List<Product>')
-        .get('/products/{id}',
+        .get('/posts/{id}',
             name: 'Get Product Details',
             tags: ['products', 'read'],
             responseType: 'Product')
-        .post('/products',
+        .post('/posts',
             name: 'Create Product',
             tags: ['products', 'write'],
             responseType: 'Product')
-        .put('/products/{id}',
+        .put('/posts/{id}',
             name: 'Update Product',
             tags: ['products', 'write'],
             responseType: 'Product')
-        .delete('/products/{id}',
+        .delete('/posts/{id}',
             name: 'Delete Product',
             tags: ['products', 'write'],
             responseType: 'Product')
         
-        // Categories
-        .get('/products/categories',
+        // Albums as "Categories"
+        .get('/albums',
             name: 'Get Categories',
+            queryParams: ['userId', '_limit'],
             tags: ['categories', 'read'],
-            responseType: 'List<String>')
-        .get('/products/category/{category}',
-            name: 'Get Products by Category',
-            queryParams: ['limit', 'sort'],
-            tags: ['categories', 'products', 'read'],
-            responseType: 'List<Product>')
+            responseType: 'List<Category>')
+        .get('/albums/{id}',
+            name: 'Get Category Details',
+            tags: ['categories', 'read'],
+            responseType: 'Category')
+        .get('/albums/{id}/photos',
+            name: 'Get Category Items',
+            queryParams: ['_limit', '_start'],
+            tags: ['categories', 'photos', 'read'],
+            responseType: 'List<Photo>')
         
-        // Carts
-        .get('/carts',
-            name: 'Get All Carts',
-            queryParams: ['limit', 'sort', 'startdate', 'enddate'],
-            tags: ['carts', 'read'],
-            responseType: 'List<Cart>')
-        .get('/carts/{id}',
-            name: 'Get Cart Details',
-            tags: ['carts', 'read'],
-            responseType: 'Cart')
-        .get('/carts/user/{userId}',
-            name: 'Get User Carts',
-            tags: ['carts', 'users', 'read'],
-            responseType: 'List<Cart>')
-        .post('/carts',
-            name: 'Create Cart',
-            tags: ['carts', 'write'],
-            responseType: 'Cart')
-        .put('/carts/{id}',
-            name: 'Update Cart',
-            tags: ['carts', 'write'],
-            responseType: 'Cart')
-        .delete('/carts/{id}',
-            name: 'Delete Cart',
-            tags: ['carts', 'write'],
-            responseType: 'Cart')
+        // Todos as "Orders/Carts"
+        .get('/todos',
+            name: 'Get All Orders',
+            queryParams: ['userId', 'completed', '_limit', '_start'],
+            tags: ['orders', 'read'],
+            responseType: 'List<Order>')
+        .get('/todos/{id}',
+            name: 'Get Order Details',
+            tags: ['orders', 'read'],
+            responseType: 'Order')
+        .post('/todos',
+            name: 'Create Order',
+            tags: ['orders', 'write'],
+            responseType: 'Order')
+        .put('/todos/{id}',
+            name: 'Update Order',
+            tags: ['orders', 'write'],
+            responseType: 'Order')
+        .delete('/todos/{id}',
+            name: 'Delete Order',
+            tags: ['orders', 'write'],
+            responseType: 'Order')
         
         // Users
         .get('/users',
             name: 'Get All Users',
-            queryParams: ['limit', 'sort'],
+            queryParams: ['_limit', '_start'],
             tags: ['users', 'read'],
             responseType: 'List<User>')
         .get('/users/{id}',
             name: 'Get User Details',
             tags: ['users', 'read'],
             responseType: 'User')
-        .post('/users',
-            name: 'Create User',
-            tags: ['users', 'write'],
-            responseType: 'User')
-        .put('/users/{id}',
-            name: 'Update User',
-            tags: ['users', 'write'],
-            responseType: 'User')
-        .delete('/users/{id}',
-            name: 'Delete User',
-            tags: ['users', 'write'],
-            responseType: 'User')
+        .get('/users/{id}/posts',
+            name: 'Get User Products',
+            queryParams: ['_limit', '_start'],
+            tags: ['users', 'products', 'read'],
+            responseType: 'List<Product>')
+        .get('/users/{id}/albums',
+            name: 'Get User Categories',
+            queryParams: ['_limit', '_start'],
+            tags: ['users', 'categories', 'read'],
+            responseType: 'List<Category>')
+        .get('/users/{id}/todos',
+            name: 'Get User Orders',
+            queryParams: ['_limit', '_start', 'completed'],
+            tags: ['users', 'orders', 'read'],
+            responseType: 'List<Order>')
         
-        // Auth
-        .post('/auth/login',
-            name: 'User Login',
-            tags: ['auth'],
-            responseType: 'LoginResponse')
+        // Comments as "Reviews"
+        .get('/comments',
+            name: 'Get Product Reviews',
+            queryParams: ['postId', '_limit'],
+            tags: ['reviews', 'read'],
+            responseType: 'List<Review>')
+        .get('/comments/{id}',
+            name: 'Get Review Details',
+            tags: ['reviews', 'read'],
+            responseType: 'Review')
+        .get('/posts/{id}/comments',
+            name: 'Get Reviews for Product',
+            queryParams: ['_limit', '_start'],
+            tags: ['products', 'reviews', 'read'],
+            responseType: 'List<Review>')
         
         .build();
   }
@@ -329,401 +343,110 @@ class SampleApiDefinitions {
 
   /// Creates an API definition from OpenAPI specification.
   static ApiDefinition openApiPetStore() {
-    // Sample OpenAPI spec for Petstore API
+    // Sample OpenAPI spec for JSONPlaceholder API
     final openApiSpec = {
       "openapi": "3.0.0",
       "info": {
-        "title": "Petstore API",
-        "description": "Sample API for a pet store (using v3 API)",
-        "version": "3.0.0"
+        "title": "JSONPlaceholder API",
+        "description": "A simple REST API for testing and prototyping (JSON format example)",
+        "version": "1.0.0"
       },
       "servers": [
         {
-          "url": "https://petstore3.swagger.io/api/v3"
+          "url": "https://jsonplaceholder.typicode.com"
         }
       ],
       "paths": {
-        "/pet": {
-          "post": {
-            "tags": ["pet"],
-            "summary": "Add a new pet",
-            "description": "Add a new pet to the store",
-            "operationId": "addPet",
-            "requestBody": {
-              "description": "Pet object to be added",
-              "required": true,
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "required": ["name", "photoUrls"],
-                    "properties": {
-                      "id": {"type": "integer", "format": "int64"},
-                      "name": {"type": "string", "example": "doggie"},
-                      "category": {
+        "/posts": {
+          "get": {
+            "tags": ["posts", "read"],
+            "summary": "Get All Posts",
+            "description": "Retrieve all posts",
+            "operationId": "getAllPosts",
+            "parameters": [
+              {
+                "name": "userId",
+                "in": "query",
+                "description": "Filter by user ID",
+                "required": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              {
+                "name": "_limit",
+                "in": "query",
+                "description": "Maximum number of posts to return",
+                "required": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              {
+                "name": "_start",
+                "in": "query",
+                "description": "Number of results to skip",
+                "required": false,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
                         "type": "object",
                         "properties": {
-                          "id": {"type": "integer", "format": "int64"},
-                          "name": {"type": "string"}
+                          "userId": {"type": "integer"},
+                          "id": {"type": "integer"},
+                          "title": {"type": "string"},
+                          "body": {"type": "string"}
                         }
-                      },
-                      "photoUrls": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "example": ["https://example.com/photo1.jpg"]
-                      },
-                      "tags": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "id": {"type": "integer", "format": "int64"},
-                            "name": {"type": "string"}
-                          }
-                        }
-                      },
-                      "status": {
-                        "type": "string",
-                        "description": "pet status in the store",
-                        "enum": ["available", "pending", "sold"]
                       }
                     }
                   }
                 }
-              }
-            },
-            "responses": {
-              "200": {
-                "description": "Successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "\$ref": "#/components/schemas/Pet"
-                    }
-                  }
-                }
-              },
-              "405": {
-                "description": "Invalid input"
               }
             }
           },
-          "put": {
-            "tags": ["pet"],
-            "summary": "Update an existing pet",
-            "description": "Update an existing pet by Id",
-            "operationId": "updatePet",
-            "requestBody": {
-              "description": "Pet object to be updated",
-              "required": true,
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "\$ref": "#/components/schemas/Pet"
-                  }
-                }
-              }
-            },
-            "responses": {
-              "200": {
-                "description": "Successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "\$ref": "#/components/schemas/Pet"
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Invalid ID supplied"
-              },
-              "404": {
-                "description": "Pet not found"
-              },
-              "405": {
-                "description": "Validation exception"
-              }
-            }
-          }
-        },
-        "/pet/{petId}": {
-          "get": {
-            "tags": ["pet"],
-            "summary": "Find pet by ID",
-            "description": "Returns a single pet",
-            "operationId": "getPetById",
-            "parameters": [
-              {
-                "name": "petId",
-                "in": "path",
-                "description": "ID of pet to return",
-                "required": true,
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "\$ref": "#/components/schemas/Pet"
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Invalid ID supplied"
-              },
-              "404": {
-                "description": "Pet not found"
-              }
-            }
-          },
-          "delete": {
-            "tags": ["pet"],
-            "summary": "Deletes a pet",
-            "description": "Deletes a pet by ID",
-            "operationId": "deletePet",
-            "parameters": [
-              {
-                "name": "api_key",
-                "in": "header",
-                "description": "API key for authentication",
-                "required": false,
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "petId",
-                "in": "path",
-                "description": "Pet id to delete",
-                "required": true,
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            ],
-            "responses": {
-              "400": {
-                "description": "Invalid pet value"
-              }
-            }
-          }
-        },
-        "/pet/findByStatus": {
-          "get": {
-            "tags": ["pet"],
-            "summary": "Finds Pets by status",
-            "description": "Multiple status values can be provided with comma separated strings",
-            "operationId": "findPetsByStatus",
-            "parameters": [
-              {
-                "name": "status",
-                "in": "query",
-                "description": "Status values that need to be considered for filter",
-                "required": false,
-                "explode": true,
-                "schema": {
-                  "type": "string",
-                  "default": "available",
-                  "enum": ["available", "pending", "sold"]
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "array",
-                      "items": {
-                        "\$ref": "#/components/schemas/Pet"
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Invalid status value"
-              }
-            }
-          }
-        },
-        "/pet/findByTags": {
-          "get": {
-            "tags": ["pet"],
-            "summary": "Finds Pets by tags",
-            "description": "Multiple tags can be provided with comma separated strings",
-            "operationId": "findPetsByTags",
-            "parameters": [
-              {
-                "name": "tags",
-                "in": "query",
-                "description": "Tags to filter by",
-                "required": false,
-                "explode": true,
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "array",
-                      "items": {
-                        "\$ref": "#/components/schemas/Pet"
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Invalid tag value"
-              }
-            }
-          }
-        },
-        "/store/order": {
           "post": {
-            "tags": ["store"],
-            "summary": "Place an order",
-            "description": "Place a new order in the store",
-            "operationId": "placeOrder",
+            "tags": ["posts", "write"],
+            "summary": "Create Post",
+            "description": "Create a new post",
+            "operationId": "createPost",
             "requestBody": {
-              "description": "Order object",
+              "description": "Post object to be created",
               "required": true,
               "content": {
                 "application/json": {
                   "schema": {
                     "type": "object",
                     "properties": {
-                      "id": {"type": "integer", "format": "int64"},
-                      "petId": {"type": "integer", "format": "int64"},
-                      "quantity": {"type": "integer", "format": "int32"},
-                      "shipDate": {"type": "string", "format": "date-time"},
-                      "status": {
-                        "type": "string",
-                        "description": "Order Status",
-                        "enum": ["placed", "approved", "delivered"]
-                      },
-                      "complete": {"type": "boolean"}
+                      "title": {"type": "string"},
+                      "body": {"type": "string"},
+                      "userId": {"type": "integer"}
                     }
                   }
                 }
               }
             },
             "responses": {
-              "200": {
-                "description": "successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "\$ref": "#/components/schemas/Order"
-                    }
-                  }
-                }
-              },
-              "405": {
-                "description": "Invalid input"
-              }
-            }
-          }
-        },
-        "/store/order/{orderId}": {
-          "get": {
-            "tags": ["store"],
-            "summary": "Find order by ID",
-            "description": "Find purchase order by ID",
-            "operationId": "getOrderById",
-            "parameters": [
-              {
-                "name": "orderId",
-                "in": "path",
-                "description": "ID of order to return",
-                "required": true,
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "successful operation",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "\$ref": "#/components/schemas/Order"
-                    }
-                  }
-                }
-              },
-              "400": {
-                "description": "Invalid ID supplied"
-              },
-              "404": {
-                "description": "Order not found"
-              }
-            }
-          },
-          "delete": {
-            "tags": ["store"],
-            "summary": "Delete order by ID",
-            "description": "Delete purchase order by ID",
-            "operationId": "deleteOrder",
-            "parameters": [
-              {
-                "name": "orderId",
-                "in": "path",
-                "description": "ID of the order to delete",
-                "required": true,
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            ],
-            "responses": {
-              "400": {
-                "description": "Invalid ID supplied"
-              },
-              "404": {
-                "description": "Order not found"
-              }
-            }
-          }
-        },
-        "/store/inventory": {
-          "get": {
-            "tags": ["store"],
-            "summary": "Returns pet inventories by status",
-            "description": "Returns a map of status codes to quantities",
-            "operationId": "getInventory",
-            "responses": {
-              "200": {
-                "description": "successful operation",
+              "201": {
+                "description": "Post created successfully",
                 "content": {
                   "application/json": {
                     "schema": {
                       "type": "object",
-                      "additionalProperties": {
-                        "type": "integer",
-                        "format": "int32"
+                      "properties": {
+                        "id": {"type": "integer"},
+                        "title": {"type": "string"},
+                        "body": {"type": "string"},
+                        "userId": {"type": "integer"}
                       }
                     }
                   }
@@ -732,73 +455,242 @@ class SampleApiDefinitions {
             }
           }
         },
-        "/user": {
-          "post": {
-            "tags": ["user"],
-            "summary": "Create user",
-            "description": "This can only be done by the logged in user",
-            "operationId": "createUser",
+        "/posts/{id}": {
+          "get": {
+            "tags": ["posts", "read"],
+            "summary": "Get Post by ID",
+            "description": "Retrieve a specific post",
+            "operationId": "getPostById",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Post ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {"type": "integer"},
+                        "id": {"type": "integer"},
+                        "title": {"type": "string"},
+                        "body": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Post not found"
+              }
+            }
+          },
+          "put": {
+            "tags": ["posts", "write"],
+            "summary": "Update Post",
+            "description": "Update an existing post",
+            "operationId": "updatePost",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Post ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
             "requestBody": {
-              "description": "Created user object",
+              "description": "Post object to be updated",
               "required": true,
               "content": {
                 "application/json": {
                   "schema": {
                     "type": "object",
                     "properties": {
-                      "id": {"type": "integer", "format": "int64"},
-                      "username": {"type": "string"},
-                      "firstName": {"type": "string"},
-                      "lastName": {"type": "string"},
-                      "email": {"type": "string"},
-                      "password": {"type": "string"},
-                      "phone": {"type": "string"},
-                      "userStatus": {"type": "integer", "format": "int32"}
+                      "title": {"type": "string"},
+                      "body": {"type": "string"},
+                      "userId": {"type": "integer"}
                     }
                   }
                 }
               }
             },
             "responses": {
-              "default": {
-                "description": "successful operation"
+              "200": {
+                "description": "Post updated successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {"type": "integer"},
+                        "id": {"type": "integer"},
+                        "title": {"type": "string"},
+                        "body": {"type": "string"}
+                      }
+                    }
+                  }
+                }
               }
             }
-          }
-        },
-        "/user/{username}": {
-          "get": {
-            "tags": ["user"],
-            "summary": "Get user by username",
-            "description": "Get user by username",
-            "operationId": "getUserByName",
+          },
+          "delete": {
+            "tags": ["posts", "write"],
+            "summary": "Delete Post",
+            "description": "Delete a post",
+            "operationId": "deletePost",
             "parameters": [
               {
-                "name": "username",
+                "name": "id",
                 "in": "path",
-                "description": "The name that needs to be fetched",
+                "description": "Post ID",
                 "required": true,
                 "schema": {
-                  "type": "string"
+                  "type": "integer"
                 }
               }
             ],
             "responses": {
               "200": {
-                "description": "successful operation",
+                "description": "Post deleted successfully"
+              }
+            }
+          }
+        },
+        "/users": {
+          "get": {
+            "tags": ["users", "read"],
+            "summary": "Get All Users",
+            "description": "Retrieve all users",
+            "operationId": "getAllUsers",
+            "responses": {
+              "200": {
+                "description": "Successful response",
                 "content": {
                   "application/json": {
                     "schema": {
-                      "\$ref": "#/components/schemas/User"
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "integer"},
+                          "name": {"type": "string"},
+                          "username": {"type": "string"},
+                          "email": {"type": "string"},
+                          "address": {"type": "object"},
+                          "phone": {"type": "string"},
+                          "website": {"type": "string"},
+                          "company": {"type": "object"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/users/{id}": {
+          "get": {
+            "tags": ["users", "read"],
+            "summary": "Get User by ID",
+            "description": "Retrieve a specific user",
+            "operationId": "getUserById",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "User ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "id": {"type": "integer"},
+                        "name": {"type": "string"},
+                        "username": {"type": "string"},
+                        "email": {"type": "string"},
+                        "address": {"type": "object"},
+                        "phone": {"type": "string"},
+                        "website": {"type": "string"},
+                        "company": {"type": "object"}
+                      }
                     }
                   }
                 }
               },
-              "400": {
-                "description": "Invalid username supplied"
-              },
               "404": {
                 "description": "User not found"
+              }
+            }
+          }
+        },
+        "/comments": {
+          "get": {
+            "tags": ["comments", "read"],
+            "summary": "Get Comments",
+            "description": "Retrieve comments",
+            "operationId": "getComments",
+            "parameters": [
+              {
+                "name": "postId",
+                "in": "query",
+                "description": "Filter by post ID",
+                "required": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              {
+                "name": "_limit",
+                "in": "query",
+                "description": "Number of comments to return",
+                "required": false,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "postId": {"type": "integer"},
+                          "id": {"type": "integer"},
+                          "name": {"type": "string"},
+                          "email": {"type": "string"},
+                          "body": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -814,7 +706,7 @@ class SampleApiDefinitions {
   static ApiDefinition _fallbackPetStoreApi() {
     return SimpleApiBuilder(
       title: 'Petstore API (Fallback)',
-      baseUrl: 'https://petstore3.swagger.io/api/v3',
+      baseUrl: 'https://jsonplaceholder.typicode.com',
       description: 'Sample API for a pet store',
     )
         .get('/pet/findByStatus', 
@@ -874,150 +766,105 @@ class SampleApiDefinitions {
     const openApiYaml = '''
 openapi: 3.0.0
 info:
-  title: Books API
-  description: A simple books management API (YAML format example)
+  title: JSONPlaceholder API
+  description: A simple REST API for testing and prototyping (YAML format example)
   version: 1.0.0
 servers:
-  - url: https://openlibrary.org/api
+  - url: https://jsonplaceholder.typicode.com
 paths:
-  /books:
+  /posts:
     get:
       tags:
-        - books
-      summary: Search for books
-      description: Search for books using Open Library API
+        - posts
+        - read
+      summary: Get All Posts
+      description: Retrieve all posts
       parameters:
-        - name: q
+        - name: userId
           in: query
-          description: Search query (title, author, ISBN)
-          required: true
-          schema:
-            type: string
-        - name: title
-          in: query
-          description: Filter by title
-          required: false
-          schema:
-            type: string
-        - name: author
-          in: query
-          description: Filter by author name
-          required: false
-          schema:
-            type: string
-        - name: subject
-          in: query
-          description: Filter by subject/genre
-          required: false
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: Maximum number of books to return
+          description: Filter by user ID
           required: false
           schema:
             type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-        - name: offset
+        - name: _limit
+          in: query
+          description: Maximum number of posts to return
+          required: false
+          schema:
+            type: integer
+        - name: _start
           in: query
           description: Number of results to skip
           required: false
           schema:
             type: integer
-            minimum: 0
-            default: 0
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  numFound:
-                    type: integer
-                  start:
-                    type: integer
-                  docs:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        key:
-                          type: string
-                        title:
-                          type: string
-                        author_name:
-                          type: array
-                          items:
-                            type: string
-                        first_publish_year:
-                          type: integer
-                        isbn:
-                          type: array
-                          items:
-                            type: string
-  /works/{id}.json:
-    get:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: integer
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    body:
+                      type: string
+    post:
       tags:
-        - books
-      summary: Get book details
-      description: Get detailed information about a specific work
-      parameters:
-        - name: id
-          in: path
-          description: Work ID (e.g., OL45804W)
-          required: true
-          schema:
-            type: string
+        - posts
+        - write
+      summary: Create Post
+      description: Create a new post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                userId:
+                  type: integer
       responses:
-        '200':
-          description: Successful response
+        '201':
+          description: Post created successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   title:
                     type: string
-                  description:
+                  body:
                     type: string
-                  subjects:
-                    type: array
-                    items:
-                      type: string
-                  authors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        author:
-                          type: object
-                          properties:
-                            key:
-                              type: string
-                        type:
-                          type: object
-                          properties:
-                            key:
-                              type: string
-        '404':
-          description: Work not found
-  /authors/{id}.json:
+                  userId:
+                    type: integer
+  /posts/{id}:
     get:
       tags:
-        - authors
-      summary: Get author details
-      description: Get information about a specific author
+        - posts
+        - read
+      summary: Get Post by ID
+      description: Retrieve a specific post
       parameters:
         - name: id
           in: path
-          description: Author ID (e.g., OL23919A)
+          description: Post ID
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '200':
           description: Successful response
@@ -1026,123 +873,234 @@ paths:
               schema:
                 type: object
                 properties:
-                  name:
-                    type: string
-                  bio:
-                    type: string
-                  birth_date:
-                    type: string
-                  death_date:
-                    type: string
-                  alternate_names:
-                    type: array
-                    items:
-                      type: string
-        '404':
-          description: Author not found
-  /isbn/{isbn}.json:
-    get:
-      tags:
-        - books
-      summary: Get book by ISBN
-      description: Get book information by ISBN
-      parameters:
-        - name: isbn
-          in: path
-          description: ISBN-10 or ISBN-13
-          required: true
-          schema:
-            type: string
-            pattern: '^(97(8|9))?\\\\d{9}(\\\\d|X)\$'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-        '404':
-          description: ISBN not found
-  /subjects/{subject}.json:
-    get:
-      tags:
-        - subjects
-      summary: Get books by subject
-      description: Get a list of works for a given subject
-      parameters:
-        - name: subject
-          in: path
-          description: Subject name (e.g., science_fiction, love)
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: Number of results to return
-          required: false
-          schema:
-            type: integer
-            default: 20
-        - name: offset
-          in: query
-          description: Number of results to skip
-          required: false
-          schema:
-            type: integer
-            default: 0
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  subject_type:
-                    type: string
-                  name:
-                    type: string
-                  work_count:
+                  userId:
                     type: integer
-                  works:
-                    type: array
-                    items:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  body:
+                    type: string
+        '404':
+          description: Post not found
+    put:
+      tags:
+        - posts
+        - write
+      summary: Update Post
+      description: Update an existing post
+      parameters:
+        - name: id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                userId:
+                  type: integer
+      responses:
+        '200':
+          description: Post updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  body:
+                    type: string
+    delete:
+      tags:
+        - posts
+        - write
+      summary: Delete Post
+      description: Delete a post
+      parameters:
+        - name: id
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post deleted successfully
+  /users:
+    get:
+      tags:
+        - users
+        - read
+      summary: Get All Users
+      description: Retrieve all users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    email:
+                      type: string
+                    address:
                       type: object
+                    phone:
+                      type: string
+                    website:
+                      type: string
+                    company:
+                      type: object
+  /users/{id}:
+    get:
+      tags:
+        - users
+        - read
+      summary: Get User by ID
+      description: Retrieve a specific user
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  username:
+                    type: string
+                  email:
+                    type: string
+                  address:
+                    type: object
+                  phone:
+                    type: string
+                  website:
+                    type: string
+                  company:
+                    type: object
+        '404':
+          description: User not found
+  /comments:
+    get:
+      tags:
+        - comments
+        - read
+      summary: Get Comments
+      description: Retrieve comments
+      parameters:
+        - name: postId
+          in: query
+          description: Filter by post ID
+          required: false
+          schema:
+            type: integer
+        - name: _limit
+          in: query
+          description: Number of comments to return
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    postId:
+                      type: integer
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    body:
+                      type: string
 ''';
 
     // Convert YAML to ApiDefinition
-    return OpenApiLoader.fromYamlString(openApiYaml, baseUrl: 'https://openlibrary.org/api') ?? _fallbackBooksApi();
+    return OpenApiLoader.fromYamlString(openApiYaml, baseUrl: 'https://jsonplaceholder.typicode.com') ?? _fallbackBooksApi();
   }
 
-  /// Fallback Books API definition in case YAML parsing fails.
+  /// Fallback JSONPlaceholder API definition in case YAML parsing fails.
   static ApiDefinition _fallbackBooksApi() {
     return SimpleApiBuilder(
-      title: 'Open Library API (Fallback)',
-      baseUrl: 'https://openlibrary.org/api',
-      description: 'Open Library book search and information API',
+      title: 'JSONPlaceholder API (Fallback)',
+      baseUrl: 'https://jsonplaceholder.typicode.com',
+      description: 'Fake online REST API for testing and prototyping',
     )
-        .get('/books', 
-            name: 'Search Books',
-            queryParams: ['q', 'title', 'author', 'subject', 'limit', 'offset'],
-            tags: ['books'],
-            responseType: 'BookSearchResponse')
-        .get('/works/{id}.json', 
-            name: 'Get Book Details',
-            tags: ['books'],
-            responseType: 'Work')
-        .get('/authors/{id}.json', 
-            name: 'Get Author Details',
-            tags: ['authors'],
-            responseType: 'Author')
-        .get('/isbn/{isbn}.json', 
-            name: 'Get Book by ISBN',
-            tags: ['books'],
-            responseType: 'Book')
-        .get('/subjects/{subject}.json', 
-            name: 'Get Books by Subject',
-            queryParams: ['limit', 'offset'],
-            tags: ['subjects'],
-            responseType: 'SubjectResponse')
+        .get('/posts', 
+            name: 'Get All Posts',
+            queryParams: ['userId', '_limit', '_start'],
+            tags: ['posts'],
+            responseType: 'List<Post>')
+        .get('/posts/{id}', 
+            name: 'Get Post by ID',
+            tags: ['posts'],
+            responseType: 'Post')
+        .post('/posts', 
+            name: 'Create Post',
+            tags: ['posts'],
+            responseType: 'Post')
+        .put('/posts/{id}', 
+            name: 'Update Post',
+            tags: ['posts'],
+            responseType: 'Post')
+        .delete('/posts/{id}', 
+            name: 'Delete Post',
+            tags: ['posts'])
+        .get('/users', 
+            name: 'Get All Users',
+            queryParams: ['_limit'],
+            tags: ['users'],
+            responseType: 'List<User>')
+        .get('/users/{id}', 
+            name: 'Get User by ID',
+            tags: ['users'],
+            responseType: 'User')
+        .get('/comments', 
+            name: 'Get Comments',
+            queryParams: ['postId', '_limit'],
+            tags: ['comments'],
+            responseType: 'List<Comment>')
         .build();
   }
 }
