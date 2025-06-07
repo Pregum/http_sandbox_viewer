@@ -79,7 +79,7 @@ void main() {
       final testRecord = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {'Content-Type': 'application/json'},
         timestamp: DateTime.now(),
         response: HttpResponseRecord(
@@ -101,7 +101,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should display the request
-      expect(find.text('https://api.example.com/test'), findsOneWidget);
+      expect(find.text('https://jsonplaceholder.typicode.com/test'), findsOneWidget);
       expect(find.text('GET'), findsOneWidget);
       expect(find.text('200'), findsOneWidget);
       expect(find.text('OK'), findsOneWidget);
@@ -113,7 +113,7 @@ void main() {
         services: [
           ApiService(
             name: 'Test Service',
-            baseUrl: 'https://api.example.com',
+            baseUrl: 'https://jsonplaceholder.typicode.com',
             endpoints: [
               ApiEndpoint(
                 name: 'Get Test',
@@ -150,7 +150,7 @@ void main() {
       final testRecord = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {},
         timestamp: DateTime.now(),
       );
@@ -165,7 +165,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should show the request
-      expect(find.text('https://api.example.com/test'), findsOneWidget);
+      expect(find.text('https://jsonplaceholder.typicode.com/test'), findsOneWidget);
 
       // Tap clear all button
       await tester.tap(find.byIcon(Icons.clear_all));
@@ -173,14 +173,14 @@ void main() {
 
       // Should show empty state
       expect(find.text('No HTTP requests recorded yet.'), findsOneWidget);
-      expect(find.text('https://api.example.com/test'), findsNothing);
+      expect(find.text('https://jsonplaceholder.typicode.com/test'), findsNothing);
     });
 
     testWidgets('request cards are tappable and navigate to detail view', (tester) async {
       final testRecord = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {},
         timestamp: DateTime.now(),
       );
@@ -208,21 +208,21 @@ void main() {
         HttpRequestRecord(
           id: '1',
           method: 'GET',
-          url: 'https://api.example.com/get',
+          url: 'https://jsonplaceholder.typicode.com/get',
           headers: {},
           timestamp: DateTime.now(),
         ),
         HttpRequestRecord(
           id: '2',
           method: 'POST',
-          url: 'https://api.example.com/post',
+          url: 'https://jsonplaceholder.typicode.com/post',
           headers: {},
           timestamp: DateTime.now(),
         ),
         HttpRequestRecord(
           id: '3',
           method: 'DELETE',
-          url: 'https://api.example.com/delete',
+          url: 'https://jsonplaceholder.typicode.com/delete',
           headers: {},
           timestamp: DateTime.now(),
         ),
@@ -250,7 +250,7 @@ void main() {
         HttpRequestRecord(
           id: '1',
           method: 'GET',
-          url: 'https://api.example.com/success',
+          url: 'https://jsonplaceholder.typicode.com/success',
           headers: {},
           timestamp: DateTime.now(),
           response: HttpResponseRecord(
@@ -264,7 +264,7 @@ void main() {
         HttpRequestRecord(
           id: '2',
           method: 'GET',
-          url: 'https://api.example.com/error',
+          url: 'https://jsonplaceholder.typicode.com/error',
           headers: {},
           timestamp: DateTime.now(),
           response: HttpResponseRecord(
@@ -278,7 +278,7 @@ void main() {
         HttpRequestRecord(
           id: '3',
           method: 'GET',
-          url: 'https://api.example.com/server-error',
+          url: 'https://jsonplaceholder.typicode.com/server-error',
           headers: {},
           timestamp: DateTime.now(),
           response: HttpResponseRecord(
@@ -318,7 +318,7 @@ void main() {
       final testRecord = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {},
         timestamp: now,
       );

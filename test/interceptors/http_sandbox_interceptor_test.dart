@@ -20,7 +20,7 @@ void main() {
       final options = RequestOptions(
         path: '/test',
         method: 'GET',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
       );
 
       interceptor.onRequest(options, MockRequestHandler());
@@ -28,7 +28,7 @@ void main() {
       expect(service.records.length, equals(1));
       expect(service.records.first.id, isNotEmpty);
       expect(service.records.first.method, equals('GET'));
-      expect(service.records.first.url, equals('https://api.example.com/test'));
+      expect(service.records.first.url, equals('https://jsonplaceholder.typicode.com/test'));
       expect(options.extra['sandboxRequestId'], isNotEmpty);
       expect(options.extra['sandboxRequestId'], equals(service.records.first.id));
     });
@@ -38,7 +38,7 @@ void main() {
       final options = RequestOptions(
         path: '/test',
         method: 'GET',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
       );
 
       interceptor.onRequest(options, MockRequestHandler());
@@ -70,7 +70,7 @@ void main() {
       final options = RequestOptions(
         path: '/test',
         method: 'POST',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
       );
 
       interceptor.onRequest(options, MockRequestHandler());
@@ -105,7 +105,7 @@ void main() {
       final options = RequestOptions(
         path: '/test',
         method: 'GET',
-        baseUrl: 'https://api.example.com',
+        baseUrl: 'https://jsonplaceholder.typicode.com',
       );
 
       interceptor.onRequest(options, MockRequestHandler());
@@ -128,21 +128,24 @@ void main() {
     });
 
     test('should handle multiple concurrent requests', () async {
-      // Create multiple requests
-      final requests = List.generate(5, (i) => RequestOptions(
-        path: '/test$i',
-        method: 'GET',
-        baseUrl: 'https://api.example.com',
-      ));
-
-      // Send all requests
-      for (final options in requests) {
+      // Create multiple requests with unique RequestOptions instances
+      final requests = <RequestOptions>[];
+      
+      for (int i = 0; i < 5; i++) {
+        final options = RequestOptions(
+          path: '/test$i',
+          method: 'GET',
+          baseUrl: 'https://jsonplaceholder.typicode.com',
+        );
+        requests.add(options);
+        
+        // Send request immediately after creating it
         interceptor.onRequest(options, MockRequestHandler());
       }
 
       expect(service.records.length, equals(5));
 
-      // Handle responses
+      // Handle responses for each request
       for (int i = 0; i < requests.length; i++) {
         final response = Response(
           requestOptions: requests[i],

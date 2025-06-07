@@ -46,7 +46,7 @@ void main() {
 
         expect(apiDefinition.title, equals('Posts CRUD API'));
         expect(apiDefinition.description, equals('Complete CRUD operations for blog posts'));
-        expect(apiDefinition.services.first.baseUrl, equals('https://api.example.com'));
+        expect(apiDefinition.services.first.baseUrl, equals('https://jsonplaceholder.typicode.com'));
 
         final endpoints = apiDefinition.services.first.endpoints;
         expect(endpoints.length, greaterThanOrEqualTo(5)); // At least 5 CRUD endpoints
@@ -79,7 +79,7 @@ void main() {
 
         expect(apiDefinition.title, equals('Users CRUD API'));
         expect(apiDefinition.description, equals('User management API'));
-        expect(apiDefinition.services.first.baseUrl, equals('https://api.example.com'));
+        expect(apiDefinition.services.first.baseUrl, equals('https://jsonplaceholder.typicode.com'));
 
         final endpoints = apiDefinition.services.first.endpoints;
         expect(endpoints.length, greaterThanOrEqualTo(5)); // At least 5 CRUD endpoints

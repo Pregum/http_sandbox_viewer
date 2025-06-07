@@ -7,14 +7,14 @@ void main() {
       final record = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {'Content-Type': 'application/json'},
         timestamp: DateTime.now(),
       );
 
       expect(record.id, '123');
       expect(record.method, 'GET');
-      expect(record.url, 'https://api.example.com/test');
+      expect(record.url, 'https://jsonplaceholder.typicode.com/test');
       expect(record.headers['Content-Type'], 'application/json');
       expect(record.response, isNull);
     });
@@ -23,7 +23,7 @@ void main() {
       final originalRecord = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {},
         timestamp: DateTime.now(),
       );
@@ -69,7 +69,7 @@ void main() {
       final record = HttpRequestRecord(
         id: '123',
         method: 'GET',
-        url: 'https://api.example.com/test',
+        url: 'https://jsonplaceholder.typicode.com/test',
         headers: {},
         timestamp: DateTime.now(),
       );
