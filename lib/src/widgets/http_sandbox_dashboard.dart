@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
 import '../models/http_request_record.dart';
+import '../models/api_definition.dart';
 import '../services/http_records_service.dart';
 import 'request_detail_view.dart';
+import 'api_definitions_dashboard.dart';
 
 class HttpSandboxDashboard extends StatefulWidget {
-  const HttpSandboxDashboard({super.key});
+  final List<ApiDefinition>? apiDefinitions;
+
+  const HttpSandboxDashboard({
+    super.key,
+    this.apiDefinitions,
+  });
 
   @override
   State<HttpSandboxDashboard> createState() => _HttpSandboxDashboardState();
 }
 
-class _HttpSandboxDashboardState extends State<HttpSandboxDashboard> {
+class _HttpSandboxDashboardState extends State<HttpSandboxDashboard>
+    with SingleTickerProviderStateMixin {
   final HttpRecordsService _recordsService = HttpRecordsService.instance;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _recordsService.loadFromStorage();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,8 +51,29 @@ class _HttpSandboxDashboardState extends State<HttpSandboxDashboard> {
             tooltip: 'Clear all records',
           ),
         ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(
+              icon: Icon(Icons.history),
+              text: 'History',
+            ),
+            Tab(
+              icon: Icon(Icons.api),
+              text: 'API Definitions',
+            ),
+          ],
+        ),
       ),
-      body: _buildRequestsList(),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildRequestsList(),
+          ApiDefinitionsDashboard(
+            initialDefinitions: widget.apiDefinitions,
+          ),
+        ],
+      ),
     );
   }
 
