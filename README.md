@@ -17,6 +17,8 @@ A Flutter package for debugging HTTP requests and responses with Swagger-like AP
 - ⏱️ **Timestamp Tracking**: See when requests were made with relative time
 - 🏗️ **Simple API Builder**: Create API definitions with 70% less code
 - 📚 **Pre-built Samples**: Ready-to-use API definitions for popular services
+- 📄 **OpenAPI/Swagger Support**: Import from YAML/JSON OpenAPI specifications
+- 🔗 **YAML Format Support**: Load APIs from YAML files with automatic detection
 
 ## 📦 Installation
 
@@ -107,6 +109,33 @@ final apiDefinitions = [
 ];
 ```
 
+### OpenAPI/Swagger Import
+
+```dart
+// From YAML string
+const openApiYaml = '''
+openapi: 3.0.0
+info:
+  title: My API
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get users
+      responses:
+        '200':
+          description: Success
+''';
+
+final apiFromYaml = OpenApiLoader.fromYamlString(openApiYaml);
+
+// From JSON string
+final apiFromJson = OpenApiLoader.fromJsonString(jsonString);
+
+// From asset file (auto-detects YAML/JSON)
+final apiFromAsset = await OpenApiLoader.fromAsset('assets/openapi.yaml');
+```
+
 ### Pre-built Samples
 
 ```dart
@@ -114,6 +143,8 @@ final apiDefinitions = [
   SampleApiDefinitions.jsonPlaceholder(),  // JSONPlaceholder API
   SampleApiDefinitions.ecommerce(),        // E-commerce API
   SampleApiDefinitions.socialMedia(),      // Social media API
+  SampleApiDefinitions.openApiPetStore(),  // OpenAPI PetStore example
+  SampleApiDefinitions.openApiYamlExample(), // YAML format example
 ];
 ```
 
@@ -252,8 +283,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ## 🔮 Roadmap
 
+- [x] **OpenAPI Support**: Import from Swagger/OpenAPI specifications ✅
+- [x] **YAML Format Support**: Full YAML format support with auto-detection ✅
 - [ ] **Retrofit Integration**: Auto-generate API definitions from Retrofit services
-- [ ] **OpenAPI Support**: Import from Swagger/OpenAPI specifications
 - [ ] **Export Features**: Save to Postman collections, HAR files
 - [ ] **Advanced Filtering**: Complex search and filter options
 - [ ] **Performance Metrics**: Network timing and performance analysis

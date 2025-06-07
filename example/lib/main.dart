@@ -121,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _openSandbox() {
-    // Option 1: Use pre-built sample API definitions
-    // final sampleApiDefinitions = SampleApiDefinitions.quickStart();
+    // Option 1: Use pre-built sample API definitions (includes OpenAPI examples)
+    // final sampleApiDefinitions = SampleApiDefinitions.all(); // All samples including OpenAPI
     
     // Option 2: Create custom API definitions using the simple builder
     final customApiDefinitions = [
@@ -164,6 +164,10 @@ class _MyHomePageState extends State<MyHomePage> {
         listQueryParams: ['postId', 'email'],
         includeSearch: true,
       ).build(),
+      
+      // Option 3: Use OpenAPI samples (PetStore and Books API in YAML format)
+      SampleApiDefinitions.openApiPetStore(),
+      SampleApiDefinitions.openApiYamlExample(),
     ];
 
     Navigator.of(context).push(
